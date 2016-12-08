@@ -1,0 +1,38 @@
+{
+	"ip" : "192.168.0.106:9123",
+	"maxRooms" : 1000,
+	"maxRoomSessions" : 16,
+	"roomTime" : 10,
+	"numBlock" : 120,
+	"refreshTime" : 10,
+	"numClound" : 0,
+	"maxClound" : 2.0,
+	"bulletId" : 1,
+	"maxRobotNum" : 1,
+	"numBullet" : 2,
+	"refreshBullet" : 1,
+	"killBlock" : 5,
+	"lifeRefreshTime" : 10,
+	"shareAward" : 50,
+	
+	"bubble" : {
+		"HP" : 150,
+		"initHP"  : 1.0,
+		"expendHP"  : 0.0,
+		"recoverHP" : 2,
+		"recoverCD" : 0.5,
+		"reduceHP" : 3,
+		"reduceCD" : 0.3,
+		"speed" : 350.0,
+		"accelerated" : 1.5,
+		"sDistance" : 650,
+		"sSpeed" : 550.0,
+		"sAccelerated" : 20.0,
+		"limitSpeed" : 110.0,
+		"limiRradius" : 0.5,
+		"rotateSpeed" : 600.0,
+		"sCD" : 0.5,
+		"exp" : "50/125",
+		"grow" : "1.1/1.2"
+	}
+}

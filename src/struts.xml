@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.ui.theme" value="simple"></constant>
+    <constant name="struts.objectFactory" value="spring"/>  
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+     <constant name="struts.objectFactory" value="spring"></constant>
+     <constant name="struts.multipart.maxSize" value="200000000"/> 
+    
+	<package name="game_user" namespace="/" extends="struts-default">
+	   <action name="user_*" class="com.qianqi.web.action.GUserAction" method="{1}">
+	       <result name="index" >/index.jsp</result>
+	   </action>
+	   
+	  
+	   
+	</package>
+</struts>    
