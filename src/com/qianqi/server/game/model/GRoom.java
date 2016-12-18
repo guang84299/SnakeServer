@@ -3,6 +3,7 @@ package com.qianqi.server.game.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,7 +11,9 @@ import net.sf.json.JSONObject;
 import com.qianqi.server.GServerConfig;
 import com.qianqi.server.GServerController;
 import com.qianqi.server.game.tools.GModelTool;
+import com.qianqi.server.handler.GSessionHandler;
 import com.qianqi.server.protocol.mode.GModeGame;
+import com.qianqi.server.session.GSession;
 import com.qianqi.web.tools.GTools;
 
 public class GRoom {
@@ -25,7 +28,8 @@ public class GRoom {
 	private long robotId = 100000000;
 	private long dropDt = 0;
 	private long blockHpDt = 0;
-//	private long updatePosDt = 0;
+	private long updatePosDt = 0;
+	private long updateRotateDt = 0;
 	private long blockHpTime = GServerConfig.lifeRefreshTime;
 	private HashMap<Long,GBubble> bubbles = null;
 	private HashMap<Integer,GBlock> blocks = null;
@@ -67,6 +71,30 @@ public class GRoom {
 	public GBubble find(long sessionId)
 	{
 		return bubbles.get(sessionId);
+	}
+	public GBubble find(String uid)
+	{
+		for(GBubble b : bubbles.values())
+		{
+			if(b.getUid().equals(uid))
+			{
+				return b;
+			}
+		}
+		return null;
+	}
+	public long findSessionId(String uid)
+	{
+		for (Map.Entry<Long, GBubble> entry : bubbles.entrySet()) 
+		{
+			long sessionId = entry.getKey();
+			GBubble b = entry.getValue();
+			if(b.getUid().equals(uid))
+			{
+				return sessionId;
+			}
+		}
+		return -1;
 	}
 	//获取房间人数
 	public int getSessionNum()
@@ -153,7 +181,7 @@ public class GRoom {
 						dt = currTime - lastTime;
 						lastTime = currTime;	
 						update(dt);
-						Thread.sleep(33);								
+						Thread.sleep(30);								
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -163,17 +191,29 @@ public class GRoom {
 			};
 		}.start();	
 	}
-	
+	public void sendPos()
+	{
+		GModeGame.getInstance().sendPos(roomId,updatePosDt);
+		updatePosDt = 0;
+	}
 	private void update(long dt)
 	{		
 		time -= dt;
 		
-//		if(updatePosDt >= 40)
-//		{
-//			updatePosDt = 0;
-//			GModeGame.getInstance().sendPos(roomId);
-//		}
-//		updatePosDt += dt;
+		updateRotateDt+=dt;
+		if(updateRotateDt >= 50)
+		{
+			GModeGame.getInstance().updateRotate(roomId, updateRotateDt);
+			updateRotateDt = 0;
+		}
+		
+		updatePosDt+=dt;
+		if(updatePosDt >= 50)
+		{
+			GModeGame.getInstance().sendPos(roomId,updatePosDt);
+			updatePosDt = 0;
+		}
+		
 		if(commonDt >= 1000)
 		{
 			GModeGame.getInstance().roomCountDown(roomId,time);
@@ -197,33 +237,33 @@ public class GRoom {
 			{
 				addBlock();		
 			}
-			int num = getBlockBulletNum();
-			if((bubbles.size()+robots.size())*GServerConfig.refreshBullet > num)
-			{
-				addBlockBullet(num);
-			}
+//			int num = getBlockBulletNum();
+//			if((bubbles.size()+robots.size())*GServerConfig.refreshBullet > num)
+//			{
+//				addBlockBullet(num);
+//			}
 
 		}
 		blockDt+=dt;
 		
 		//血包刷新
 		
-		if(blockHpDt >= blockHpTime)
-		{
-			blockHpDt = 0;
-			
-			int r = GTools.getRand(0, 100);
-			long t = (long) (GServerConfig.lifeRefreshTime * (GTools.getRand(0, 30) / 100.f));
-			if(r > 50)
-				blockHpTime = GServerConfig.lifeRefreshTime + t;
-			else
-				blockHpTime = GServerConfig.lifeRefreshTime - t;
-			
-			int num = getBlockHPNum();
-			if(num < (bubbles.size()+robots.size()))
-			addBlockHp(1);
-		}
-		blockHpDt+=dt;
+//		if(blockHpDt >= blockHpTime)
+//		{
+//			blockHpDt = 0;
+//			
+//			int r = GTools.getRand(0, 100);
+//			long t = (long) (GServerConfig.lifeRefreshTime * (GTools.getRand(0, 30) / 100.f));
+//			if(r > 50)
+//				blockHpTime = GServerConfig.lifeRefreshTime + t;
+//			else
+//				blockHpTime = GServerConfig.lifeRefreshTime - t;
+//			
+//			int num = getBlockHPNum();
+//			if(num < (bubbles.size()+robots.size()))
+//			addBlockHp(1);
+//		}
+//		blockHpDt+=dt;
 	}
 	private void initBlock()
 	{
@@ -260,42 +300,42 @@ public class GRoom {
 		GModeGame.getInstance().addBlock(roomId,list,0,0);
 	}
 	
-	private void addBlockBullet(int num)
-	{
-		num = (robots.size()+bubbles.size())*GServerConfig.refreshBullet - num;
-		List<GBlock> list = new ArrayList<GBlock>();
-		for(int i=0;i<num;i++)
-		{
-			blockId++;			
-			GBlock block = GModelTool.getBlockBullet(blockId,mapWidth, mapHeight);
-			while(isCoincide(block))
-			{
-				block.setX(GTools.getRand(30, mapWidth-30));
-				block.setY(GTools.getRand(30, mapHeight-30));
-			}
-			list.add(block);
-			blocks.put(blockId, block);
-		}
-		GModeGame.getInstance().addBlock(roomId,list,0,0);
-	}
+//	private void addBlockBullet(int num)
+//	{
+//		num = (robots.size()+bubbles.size())*GServerConfig.refreshBullet - num;
+//		List<GBlock> list = new ArrayList<GBlock>();
+//		for(int i=0;i<num;i++)
+//		{
+//			blockId++;			
+//			GBlock block = GModelTool.getBlockBullet(blockId,mapWidth, mapHeight);
+//			while(isCoincide(block))
+//			{
+//				block.setX(GTools.getRand(30, mapWidth-30));
+//				block.setY(GTools.getRand(30, mapHeight-30));
+//			}
+//			list.add(block);
+//			blocks.put(blockId, block);
+//		}
+//		GModeGame.getInstance().addBlock(roomId,list,0,0);
+//	}
 	
-	private void addBlockHp(int num)
-	{
-		List<GBlock> list = new ArrayList<GBlock>();
-		for(int i=0;i<num;i++)
-		{
-			blockId++;			
-			GBlock block = GModelTool.getBlockHp(blockId,mapWidth, mapHeight);
-			while(isCoincide(block))
-			{
-				block.setX(GTools.getRand(30, mapWidth-30));
-				block.setY(GTools.getRand(30, mapHeight-30));
-			}
-			list.add(block);
-			blocks.put(blockId, block);
-		}
-		GModeGame.getInstance().addBlock(roomId,list,0,0);
-	}
+//	private void addBlockHp(int num)
+//	{
+//		List<GBlock> list = new ArrayList<GBlock>();
+//		for(int i=0;i<num;i++)
+//		{
+//			blockId++;			
+//			GBlock block = GModelTool.getBlockHp(blockId,mapWidth, mapHeight);
+//			while(isCoincide(block))
+//			{
+//				block.setX(GTools.getRand(30, mapWidth-30));
+//				block.setY(GTools.getRand(30, mapHeight-30));
+//			}
+//			list.add(block);
+//			blocks.put(blockId, block);
+//		}
+//		GModeGame.getInstance().addBlock(roomId,list,0,0);
+//	}
 	
 	private void initClound()
 	{
@@ -310,17 +350,19 @@ public class GRoom {
 			mapPosX = (float) obj.getDouble("x");
 			mapPosY = (float) obj.getDouble("y");
 
-			
-			JSONArray points = obj.getJSONArray("points");
-			for(int i=0;i<points.size();i++)
-			{
-				JSONObject point = points.getJSONObject(i);
-				float x = (float) point.getDouble("x");
-				float y = (float) point.getDouble("y");
-				
-				GClound clound = GModelTool.getClound(x,y,tileW,tileH);
-				clounds.add(clound);
-			}
+//			JSONArray points = obj.getJSONArray("points");
+//			if(points != null)
+//			{
+//				for(int i=0;i<points.size();i++)
+//				{
+//					JSONObject point = points.getJSONObject(i);
+//					float x = (float) point.getDouble("x");
+//					float y = (float) point.getDouble("y");
+//					
+//					GClound clound = GModelTool.getClound(x,y,tileW,tileH);
+//					clounds.add(clound);
+//				}
+//			}
 		}
 //		for(int i=0;i<GServerConfig.numClound;i++)
 //		{
@@ -366,20 +408,20 @@ public class GRoom {
 		}
 		return false;
 	}
-	private int getBlockBulletNum()
-	{
-		int num = 0;
-		synchronized(GModeGame.getInstance())
-		{
-			for(GBlock block : blocks.values())
-			{
-				if(block.getBulletType() > 1)
-					num++;
-			}
-		}
-		
-		return num;
-	}
+//	private int getBlockBulletNum()
+//	{
+//		int num = 0;
+//		synchronized(GModeGame.getInstance())
+//		{
+//			for(GBlock block : blocks.values())
+//			{
+//				if(block.getBulletType() > 1)
+//					num++;
+//			}
+//		}
+//		
+//		return num;
+//	}
 	
 	private int getBlockHPNum()
 	{
@@ -405,36 +447,24 @@ public class GRoom {
 			if(drops.size() > 0)
 			{
 				GDrop drop = drops.get(0);
+				JSONArray pos = drop.getPos();
+				int exp = drop.getExp();
 				List<GBlock> list = new ArrayList<GBlock>();
-				for(int i=0;i<drop.getNum();i++)
+				for(int i=0;i<pos.size();i++)
 				{
-					blockId++;			
-					GBlock block = GModelTool.getBlock(blockId,mapWidth, mapHeight);	
-					block.setX(clounds.get(0).getX());
-					block.setY(clounds.get(0).getY());
-					while(isCoincide(block))
-					{
-						int r1 = GTools.getRand(0,200);
-						int r2 = GTools.getRand(0,200);
-						r1 = r1 < 100 ? -r1 : 200-r1;
-						r2 = r2 < 100 ? -r2 : 200-r2;
-						block.setX(drop.getX()+r1);
-						block.setY(drop.getY()+r2);	
-						if(block.getX() > mapWidth)
-							block.setX(mapWidth-10);
-						if(block.getY() > mapHeight)
-							block.setY(mapHeight-10);
-						if(block.getX() < 0)
-							block.setX(10);
-						if(block.getY() < 0)
-							block.setY(10);
-					}
+					blockId++;	
+					JSONObject obj = pos.getJSONObject(i);
 					
+					GBlock block = GModelTool.getBlock(blockId,mapWidth, mapHeight);	
+					block.setX(obj.getInt("x"));
+					block.setY(obj.getInt("y"));
+					block.setExp(exp);
+				
 					list.add(block);
 					blocks.put(blockId, block);
 				}
 				drops.remove(0);
-				GModeGame.getInstance().addBlock(roomId,list,drop.getX(),drop.getY());
+				GModeGame.getInstance().addBlock(roomId,list,0,0);
 			}
 		}
 	}

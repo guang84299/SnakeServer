@@ -24,12 +24,8 @@ public class Test {
 	 
 	 public static void main(String[] args) {
 		
-		 String res = GServerConfig.initConfig("names.txt");
-		 System.out.println(res);
-		 res = res.replaceAll("\\s", "");
-		 String[] arr = res.split(",");
-		 String name = arr[GTools.getRand(0, arr.length-1)];
-		System.out.println(name.replace("\"", ""));
+		 long t = 20;
+		System.out.println(20/1000.f);
 	}
 	 
 	 private static String getString(byte[] data) {

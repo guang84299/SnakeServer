@@ -10,9 +10,9 @@ public class GBlock {
 	}
 	
 	private int id;
-	private int type;//0:普通水滴  1：特殊子弹 2：血袋
-	private int bulletType;
-	private int bulletId;
+	private int type;//0:普通水滴 2：血袋
+	private int blockType;
+	private int exp;
 	private float x;
 	private float y;
 	private STATE state;
@@ -47,20 +47,18 @@ public class GBlock {
 	public void setState(STATE state) {
 		this.state = state;
 	}
-	public int getBulletType() {
-		return bulletType;
+	public int getBlockType() {
+		return blockType;
 	}
-	public void setBulletType(int bulletType) {
-		this.bulletType = bulletType;
+	public void setBlockType(int blockType) {
+		this.blockType = blockType;
 	}
-	public int getBulletId() {
-		return bulletId;
+	public int getExp() {
+		return exp;
 	}
-	public void setBulletId(int bulletId) {
-		this.bulletId = bulletId;
+	public void setExp(int exp) {
+		this.exp = exp;
 	}
-	
-	
 	
 	
 }

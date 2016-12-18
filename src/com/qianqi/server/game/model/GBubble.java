@@ -1,5 +1,6 @@
 package com.qianqi.server.game.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.qianqi.server.GServerConfig;
@@ -21,30 +22,19 @@ public class GBubble {
 	private STATE state;
 	
 	private float speed;
-	private float accelerated;//移动加速度
 	private float sSpeed;//冲刺速度
-	private float sAccelerated;//冲刺加速度
-	private float sCD;//冲刺CD时间
-	private int sDistance;//冲刺距离
-	private float limitSpeed;//限制移动速度
-	private float limiRradius;//半径限制
 	private float rotateSpeed;//旋转速度
-	private float expendHP;//生命消耗速度
 	private float x;
 	private float y;
 	private float rotate;
+	private float angle;
 	float dirX;//方向
     float dirY;
-    private float initHp;
-    private int HP; 
-    private int currHp;
     private int level;
     private int exp;
     private float grow;
     private int kill;
     private int die;
-    private int recoverHP;//恢复血量
-    private float recoverCD;//回复CD
     private int reduceHP;//消耗血量
     private float reduceCD;//消耗CD
     
@@ -57,6 +47,7 @@ public class GBubble {
     
     //服务器独有属性
     public long currAttackTime = 0;
+//    public List<GPoint> points = new ArrayList<GPoint>();
     
 	public String getUid() {
 		return uid;
@@ -88,47 +79,17 @@ public class GBubble {
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
-	public float getAccelerated() {
-		return accelerated;
-	}
-	public void setAccelerated(float accelerated) {
-		this.accelerated = accelerated;
-	}
 	public float getsSpeed() {
 		return sSpeed;
 	}
 	public void setsSpeed(float sSpeed) {
 		this.sSpeed = sSpeed;
 	}
-	public float getsAccelerated() {
-		return sAccelerated;
-	}
-	public void setsAccelerated(float sAccelerated) {
-		this.sAccelerated = sAccelerated;
-	}
 	public float getRotateSpeed() {
 		return rotateSpeed;
 	}
 	public void setRotateSpeed(float rotateSpeed) {
 		this.rotateSpeed = rotateSpeed;
-	}
-	public float getsCD() {
-		return sCD;
-	}
-	public void setsCD(float sCD) {
-		this.sCD = sCD;
-	}
-	public int getsDistance() {
-		return sDistance;
-	}
-	public void setsDistance(int sDistance) {
-		this.sDistance = sDistance;
-	}
-	public float getExpendHP() {
-		return expendHP;
-	}
-	public void setExpendHP(float expendHP) {
-		this.expendHP = expendHP;
 	}
 	public float getX() {
 		return x;
@@ -159,24 +120,6 @@ public class GBubble {
 	}
 	public void setDirY(float dirY) {
 		this.dirY = dirY;
-	}
-	public float getInitHp() {
-		return initHp;
-	}
-	public void setInitHp(float initHp) {
-		this.initHp = initHp;
-	}
-	public int getHP() {
-		return HP;
-	}
-	public void setHP(int hP) {
-		HP = hP;
-	}
-	public int getCurrHp() {
-		return currHp;
-	}
-	public void setCurrHp(int currHp) {
-		this.currHp = currHp;
 	}
 	public int getLevel() {
 		return level;
@@ -214,18 +157,6 @@ public class GBubble {
 	public void setRobotUid(List<String> robotUid) {
 		this.robotUid = robotUid;
 	}
-	public float getLimitSpeed() {
-		return limitSpeed;
-	}
-	public void setLimitSpeed(float limitSpeed) {
-		this.limitSpeed = limitSpeed;
-	}
-	public float getLimiRradius() {
-		return limiRradius;
-	}
-	public void setLimiRradius(float limiRradius) {
-		this.limiRradius = limiRradius;
-	}
 	public int getKill() {
 		return kill;
 	}
@@ -244,18 +175,6 @@ public class GBubble {
 	public void setSkinId(int skinId) {
 		this.skinId = skinId;
 	}
-	public int getRecoverHP() {
-		return recoverHP;
-	}
-	public void setRecoverHP(int recoverHP) {
-		this.recoverHP = recoverHP;
-	}
-	public float getRecoverCD() {
-		return recoverCD;
-	}
-	public void setRecoverCD(float recoverCD) {
-		this.recoverCD = recoverCD;
-	}
 	public int getReduceHP() {
 		return reduceHP;
 	}
@@ -267,6 +186,12 @@ public class GBubble {
 	}
 	public void setReduceCD(float reduceCD) {
 		this.reduceCD = reduceCD;
+	}
+	public float getAngle() {
+		return angle;
+	}
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
 
 	

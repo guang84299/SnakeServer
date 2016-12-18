@@ -6,6 +6,7 @@ public class GProtocol {
 	public static final String MODE_USER_LOGIN = "GModeUser_login";
 	public static final String MODE_USER_HERTBEAT = "GModeUser_heartBeat";
 	public static final String MODE_USER_ENTERROOM = "GModeUser_enterRoom";
+	public static final String MODE_USER_ADDBLOCK = "GModeUser_addBlock";
 	public static final String MODE_USER_RECCONN = "GModeUser_recConn";
 	public static final String MODE_USER_UPDATENAME = "GModeUser_updateName";
 	public static final String MODE_USER_UPDATHEAD = "GModeUser_updateHead";
@@ -17,6 +18,7 @@ public class GProtocol {
 	public static final String MODE_USER_LOGIN_RESULT = "GModeUser_loginResult";
 	public static final String MODE_USER_HERTBEAT_RESULT = "GModeUser_heartBeatResult";
 	public static final String MODE_USER_ENTERROOM_RESULT = "GModeUser_enterRoomResult";
+	public static final String MODE_USER_ADDBLOCK_RESULT = "GModeUser_addBlockResult";
 	public static final String MODE_USER_RECCONN_RESULT = "GModeUser_recConnResult";
 	public static final String MODE_USER_UPDATENAME_RESULT = "GModeUser_updateNameResult";
 	public static final String MODE_USER_UPDATHEAD_RESULT = "GModeUser_updateHeadResult";

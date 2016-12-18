@@ -134,10 +134,22 @@ public class GServerConfig {
 		return exps.get(level-1);
 	}
 	
+	public static int getLevelForExp(int exp)
+	{
+		if(exp <= 0)
+			return 0;
+		for(int i=0;i<exps.size()-1;i++)
+		{
+			if(exp >= exps.get(i) && exp < exps.get(i+1))
+				return i+1;
+		}
+		return exps.size();
+	}
+	
 	public static float getGrowForLevel(int level)
 	{
 		if(level <= 0)
-			return 1.0f;
+			return 0.25f;
 		if(level >= grows.size())
 			return grows.get(grows.size()-1);
 		

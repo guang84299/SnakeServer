@@ -1,34 +1,33 @@
 package com.qianqi.server.game.model;
 
+import net.sf.json.JSONArray;
+
 public class GDrop {
 
-	private int num;
-	private int x;
-	private int y;
 	
-	public GDrop(int num, int x, int y) {
+	private int exp;
+	private JSONArray pos;
+	
+	public GDrop(int exp, JSONArray pos) {
 		super();
-		this.num = num;
-		this.x = x;
-		this.y = y;
+		this.exp = exp;
+		this.pos = pos;
 	}
-	public int getNum() {
-		return num;
+
+	public int getExp() {
+		return exp;
 	}
-	public void setNum(int num) {
-		this.num = num;
+
+	public void setExp(int exp) {
+		this.exp = exp;
 	}
-	public int getX() {
-		return x;
+
+	public JSONArray getPos() {
+		return pos;
 	}
-	public void setX(int x) {
-		this.x = x;
-	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
+
+	public void setPos(JSONArray pos) {
+		this.pos = pos;
 	}
 	
 	

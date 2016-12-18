@@ -85,26 +85,16 @@ public class GModelTool {
 		bubble.setDirX(0);
 		bubble.setDirY(1);
 
-		bubble.setHP(obj.getInt("HP"));
-		bubble.setInitHp((float)obj.getDouble("initHP"));
-		bubble.setCurrHp((int)(bubble.getHP()*bubble.getInitHp()));
 		bubble.setLevel(0);
 		bubble.setExp(0);
-		bubble.setGrow(1);
+		bubble.setGrow(0.25f);
 		bubble.setSpeed((float)obj.getDouble("speed"));
-		bubble.setAccelerated((float)obj.getDouble("accelerated"));
 		bubble.setsSpeed((float)obj.getDouble("sSpeed"));
-		bubble.setsAccelerated((float)obj.getDouble("sAccelerated"));
-		bubble.setsCD((float)obj.getDouble("sCD"));
-		bubble.setsDistance(obj.getInt("sDistance"));
-		bubble.setLimitSpeed((float)obj.getDouble("limitSpeed"));
-		bubble.setLimiRradius((float)obj.getDouble("limiRradius"));
 		bubble.setRotateSpeed((float)obj.getDouble("rotateSpeed"));
+		bubble.setAngle(0);
 		bubble.setKill(0);
 		bubble.setDie(0);
 		bubble.setSkinId(1);
-		bubble.setRecoverHP(obj.getInt("recoverHP"));
-		bubble.setRecoverCD((float)obj.getDouble("recoverCD"));
 		bubble.setReduceHP(obj.getInt("reduceHP"));
 		bubble.setReduceCD((float)obj.getDouble("reduceCD"));
 		
@@ -126,52 +116,52 @@ public class GModelTool {
 		GBlock block = new GBlock();
 		block.setId(blockId);
 		block.setType(0);
-		block.setBulletId(0);
-		block.setBulletType(0);
+		block.setBlockType(GTools.getRand(1,5));
+		block.setExp(1);
 		block.setX(GTools.getRand(30, width-30));
 		block.setY(GTools.getRand(30, height-30));
 		block.setState(GBlock.STATE.IDLE);
 		return block;
 	}
 	
-	public static GBlock getBlockBullet(int blockId,int width,int height)
-	{
-		int chance = GTools.getRand(1, 101);
-		int type = 0;
-		int id = 0;
-		for(GBullet bullet : bullets.values())
-		{
-			if(chance > bullet.getChanceFrom()*100 && chance <= bullet.getChanceTo()*100)
-			{
-				type = bullet.getType();
-				id = bullet.getId();
-				break;
-			}
-		}
-		GBlock block = new GBlock();
-		block.setId(blockId);
-		block.setType(1);
-		block.setBulletId(id);
-		block.setBulletType(type);
-		block.setX(GTools.getRand(30, width-30));
-		block.setY(GTools.getRand(30, height-30));
-		block.setState(GBlock.STATE.IDLE);
-		return block;
-	}
-	
-	
-	public static GBlock getBlockHp(int blockId,int width,int height)
-	{
-		GBlock block = new GBlock();
-		block.setId(blockId);
-		block.setType(2);
-		block.setBulletId(0);
-		block.setBulletType(0);
-		block.setX(GTools.getRand(30, width-30));
-		block.setY(GTools.getRand(30, height-30));
-		block.setState(GBlock.STATE.IDLE);
-		return block;
-	}
+//	public static GBlock getBlockBullet(int blockId,int width,int height)
+//	{
+//		int chance = GTools.getRand(1, 101);
+//		int type = 0;
+//		int id = 0;
+//		for(GBullet bullet : bullets.values())
+//		{
+//			if(chance > bullet.getChanceFrom()*100 && chance <= bullet.getChanceTo()*100)
+//			{
+//				type = bullet.getType();
+//				id = bullet.getId();
+//				break;
+//			}
+//		}
+//		GBlock block = new GBlock();
+//		block.setId(blockId);
+//		block.setType(1);
+//		block.setBulletId(id);
+//		block.setBulletType(type);
+//		block.setX(GTools.getRand(30, width-30));
+//		block.setY(GTools.getRand(30, height-30));
+//		block.setState(GBlock.STATE.IDLE);
+//		return block;
+//	}
+//	
+//	
+//	public static GBlock getBlockHp(int blockId,int width,int height)
+//	{
+//		GBlock block = new GBlock();
+//		block.setId(blockId);
+//		block.setType(2);
+//		block.setBulletId(0);
+//		block.setBulletType(0);
+//		block.setX(GTools.getRand(30, width-30));
+//		block.setY(GTools.getRand(30, height-30));
+//		block.setState(GBlock.STATE.IDLE);
+//		return block;
+//	}
 	
 //	public static GClound getClound()
 //	{
@@ -199,5 +189,23 @@ public class GModelTool {
 		if(tid > 10000000)
 			tid = 0;
 		return ++tid;
+	}
+	
+	public static float getDirX(float angle)
+	{
+		angle = angle > 180 ? angle - 360 : angle;
+	    angle = angle < -180 ? angle + 360 : angle;
+	    
+	    float currAngle = (float) ((angle-90)/(-180 / Math.PI));
+	    return (float) Math.cos(currAngle);
+	}
+	
+	public static float getDirY(float angle)
+	{
+		angle = angle > 180 ? angle - 360 : angle;
+	    angle = angle < -180 ? angle + 360 : angle;
+	    
+	    float currAngle = (float) ((angle-90)/(-180 / Math.PI));
+	    return (float) Math.sin(currAngle);
 	}
 }

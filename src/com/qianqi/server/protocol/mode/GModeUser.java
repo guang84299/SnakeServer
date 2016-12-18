@@ -4,6 +4,7 @@ package com.qianqi.server.protocol.mode;
 
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -112,8 +113,8 @@ public class GModeUser {
 			//自己
 			JSONObject bubble_data = JSONObject.fromObject(bubble);
 			//水滴
-			Collection<GBlock> list = room.getBlocks().values();
-			JSONArray block_data = JSONArray.fromObject(list);
+//			Collection<GBlock> list =  room.getBlocks().values();
+//			JSONArray block_data = JSONArray.fromObject(list);
 			//云
 //			JSONArray clounds_data = JSONArray.fromObject(room.getClounds());			
 			//机器人
@@ -124,7 +125,7 @@ public class GModeUser {
 			JSONArray bubbles_data = JSONArray.fromObject(bubble_list);
 			
 //			obj.put("bubble", bubble_data);
-			obj.put("blocks", block_data);
+//			obj.put("blocks", block_data);
 			obj.put("robots", robots_data);
 			obj.put("bubbles", bubbles_data);
 //			obj.put("clounds", clounds_data);
@@ -136,10 +137,11 @@ public class GModeUser {
 			obj.put("mapPosY", room.getMapPosY());
 			
 			obj.put("uid", gsession.getUser().getUid());
-			obj.put("result", b);		
+			obj.put("result", b);	
+
 			GData data2 = new GData(GProtocol.MODE_USER_ENTERROOM_RESULT, obj.toString());
 			session.write(data2.pack());
-			
+
 			//给其他玩家发送自己进入房间信息
 			obj = new JSONObject();
 			obj.put("uid", gsession.getUser().getUid());
@@ -148,6 +150,7 @@ public class GModeUser {
 			String otherData = obj.toString();
 			GData otherData2 = new GData(GProtocol.MODE_GAME_JOINROOM_RESULT, otherData);
 			otherData = otherData2.pack();
+		
 			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
 			{
 				long sessionId = entry.getKey();
@@ -164,6 +167,35 @@ public class GModeUser {
 			obj.put("result", b);		
 			GData data2 = new GData(GProtocol.MODE_USER_ENTERROOM_RESULT, obj.toString());
 			session.write(data2.pack());
+		}
+	}
+	
+	public synchronized void addBlock(IoSession session, String data)
+	{
+		GSession gsession = GSessionHandler.getInstance().getGSessionById(session.getId());
+		GRoom room = GServerController.getInstance().findRoom(gsession.getRoomId());
+		if(room == null)
+			return;
+		//水晶需要分批加载
+		Collection<GBlock> list = room.getBlocks().values();
+		int index = 0;
+		int i=0;
+		List<GBlock> b_list = new ArrayList<GBlock>();
+		for(GBlock b : list)
+		{
+			if(index == 100 || i == list.size()-1)
+			{
+				JSONObject obj2 = new JSONObject();
+				obj2.put("result", (i == list.size()-1));
+				obj2.put("list", JSONArray.fromObject(b_list));
+				GData data5 = new GData(GProtocol.MODE_USER_ADDBLOCK_RESULT, obj2.toString());
+				session.write(data5.pack());
+				index = 0;					
+				b_list = new ArrayList<GBlock>();
+			}
+			b_list.add(b);
+			index++;	
+			i++;
 		}
 	}
 	
@@ -188,7 +220,6 @@ public class GModeUser {
 			bubble.setRotate((float)obj.getDouble("rotate"));
 			bubble.setDirX((float)obj.getDouble("dirX"));
 			bubble.setDirY((float)obj.getDouble("dirY"));
-			bubble.setCurrHp(obj.getInt("currHp"));		
 			bubble.setSkinId(gsession.getUser().getSkinId());
 			
 			boolean b = GServerController.getInstance().allotRoom(session.getId(), bubble);
@@ -199,8 +230,8 @@ public class GModeUser {
 				//自己
 				JSONObject bubble_data = JSONObject.fromObject(bubble);
 				//水滴
-				Collection<GBlock> list = room.getBlocks().values();
-				JSONArray block_data = JSONArray.fromObject(list);
+//				Collection<GBlock> list = room.getBlocks().values();
+//				JSONArray block_data = JSONArray.fromObject(list);
 				//云
 //				JSONArray clounds_data = JSONArray.fromObject(room.getClounds());			
 				//机器人
@@ -212,7 +243,7 @@ public class GModeUser {
 				
 //				obj.put("bubble", bubble_data);
 				obj.put("type", type);
-				obj.put("blocks", block_data);
+//				obj.put("blocks", block_data);
 				obj.put("robots", robots_data);
 				obj.put("bubbles", bubbles_data);
 //				obj.put("clounds", clounds_data);

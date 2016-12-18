@@ -1,67 +1,54 @@
-{ "height":90,
+{ "height":100,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzt27lO3GAARtE\/mfQE+kCok9AD6Vne\/4HiK1EgxIzs8TTjnCN9BWIWlivL2OJ2jHFrZmZmZma2YA+2yS3t4Me0x2nPe7Z72\/uP9z1233N3H15n98nn5z7\/0I553qHHL\/melvwM1u7Q+\/2d9nvB7\/99B9fTvky7tLPe12m\/xroO7gbn7mas6+DP0MEWrO3A8WAbHA+IDogOiA6IDogOSB38HDr43+mArO3AdaRt0AHRAXF+QBwPiOMB0QHRAXF+QBwPiA6IDoj7zkQHRAfE\/y8QHRAdEB0Q15WJDogOiOvKRAdEB8T5AXE8IDog7jcSHRAdEB0Q9xuJDojrSEQHRAfE+QHRAdEBcX5AdEDcdyY6IO4zEccDogOiA6IDogPiOhLxdyPRAXG\/keiA6IDogOiA6IDogOiAnKKDi2nf7Kz3fazr4GXa\/cxdzdySx859vY9fw2cfH\/uap\/ieT\/Hec3+O+57\/Oo7r4Mk2uaUdmJmZmZmZ\/QPeyuTb",
+         "data":"eJzt28lu02AARtEfwgLogqESw6LAguH93xBHYuGCYzz07s6RvkXUDHJ05QaT3o8x7s3MzMzMzMxm+2K2siNNvZn2ddqPG7v82fz2rfveeuzlr+e5LPx86+PXduRxa\/ffc0xb3r\/\/3X\/p53vfg63v0ZbXvu7btI\/jWFdvpz2b9tpstufTPoxzXX0e8Ni7ca6rT0NX\/OtsV85XLHG+oqArCrqioCsKuqKgKwrXrt4PXfG0dEXhbFeui7JEVxR0RcHnKwrOVxScryjoioLr7RR8vqLgfEVBVxR0RUFXFFxnoKArCq4zUPB3qRR0RcHvQQq6oqArCrqi4PoVBV1R0BUFn68oOF9R0BUF37+ioCsKuqKgKwquM1DQFQVdUdAVBd9DpqArCrqi4PMVBV1R8HuQgq4o+P9BCr7XR0FXFHRFwXUGCrqioCsKuqKgKwr+PUhBVxR0RUFXFHRFQVcUdEVBVxR0RcH3RSnoioKuKOiKgs\/tFHRFQVcU\/L0zBV1ReIquXk57YTbbq3Guq5\/THma7W7h9t3B7bQ8r2\/L4tedce529z7HnMUuvtXacZ4\/36Ptz6\/iOHMOvcayr676brexIU2ZmZmZmZmZme\/cbT2tDmg==",
          "encoding":"base64",
-         "height":90,
+         "height":100,
          "name":"hai",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":130,
+         "width":150,
          "x":0,
          "y":0
         }, 
         {
          "compression":"zlib",
-         "data":"eJzt1MEJADEMA8F8Lg3k+q81KUIgDCMw04DZtczMzMzMzMzMzDL73m2ONbXz7udYU2v\/M\/WAekA9oB5QD6gH1APqAfWAekA9oB5QD6gH1APqAfWAfVNr\/zP1gHpAPaAeUA+oB9QD6gH1gHpAPaAeUA+oB9QD6gH1gH1Ta\/8z9YB6QD2gHlAPqAfUA+oB9YB6QD2gHlAPqAfUA+oB9YB9U2v\/M\/WAekA9oB5QD6gH1APqAfWAekA9oB5QD6gH1APO74GZmZmZmZmZmdkFHz2J0A==",
+         "data":"eJzt07ENgwAAxEAaUoX91w0FFbWVd2FLr5vgj6Oqqqqqqqqqqqqq3p33PpmPVN97V+Yj1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+kS6r1P9Il1fof6ZJq\/Y90SbX+R7qkWv8jXVKt\/5Euqdb\/SJdU63+ky6qqqqqqqqqqqqqq+k8\/Y852Jg==",
          "encoding":"base64",
-         "height":90,
+         "height":100,
          "name":"dige",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":130,
+         "width":150,
          "x":0,
          "y":0
         }, 
         {
          "compression":"zlib",
-         "data":"eJzt3G2OgzAMRVF2xAq6Ava\/n4ofqAgVCMROnuN7pKqj+YT4xQlM1WkCAAAAAAAAAMDfkuRvwt9n9yiRMQdPx6g1i+NSPTcPn4sHYIEsQdEy+a\/h9FJ9vfdxqvmYjX6P6hw4HtNy+LhFf4CefzUnC7aueotKr6DefamsG+SgntVeooWzzHnlgHzFkq1etXufN31coe\/fyZaD1dU5X9VMZS33cjUukda+Uj2zrzLvuCYEyjFfAPSivP+kL54bcf98xjIHmcZtNPQDeNqvhSVZU147UWa0nkImn7u7Bq95\/a9XPaizndL6I6bSHn\/2fVnrP9q1Uk0OFDLQ6hh6n6e30fZ8ihTmyx1yMJYo9YxynFExvj+MRQy19xharbWZXq\/gef3j8bufZOCYGY\/8ZMmJJ+953ap3qPWN0e5tPFVSi+xjpC7CNTbaKM3Ckx5sla358Ay7sY04\/5X2AaAeIANqIvZ1\/GzzqWbPkzEDGc\/5TsYxyXjOo2hxbzm7CGPK++eihNr\/BhQxd4AcmOtYWe+Z1jV2nnzW2v39DtX\/8\/Q+rre1tO4H237LKwuIg\/f0BjSczcPt8+wLbTCOY6nZV5EFLTX1uPvZ49c\/u2dyAGBEre979L6W7H2fB3aWP48exxAV+xo7dzmg7wBQQe\/vr+eaQP3birxPfIvXd2qjJu0x5gAAAAAAAAAARV\/Bajb+",
+         "data":"eJzt3cFy2yAQgGE9h3ryzae0J7\/\/ozWZsccOAgRogd3l\/2Y0bRrXIbCsFqQo2wYAAAAAAAAAQJnb7AagyP15YG2xGHj92237PZ9z8fJ4HljPfvL5MI5yryt9Xy+566zvIDvWGnIUY65TLkfVxuBj45yIt8\/4uW3l58RPf+Sa88uINVtuLrBmzOtV6\/z9Pv6dvGYX+vot7xHGxSNyQFZtn\/6Ma6qeSeW42twXiwPYkBrnnus3S\/X1HhzWtNQxrUpjpuZ1V+LQynhZjS1Pwji7BX9KiO2fzRx36vqjlj65b\/l9+HCcb4nXSbkSUxJtshRXlvNu2Pbe\/W65rzwo7f\/cmm8FEjks1n975nPIu1pPSZ8rX\/tmXq5TlgjXstri+OvC\/71a80ieO0tjSuMYeBDr\/6\/tHV+fY53KS7kxlN7nkOYlr43cu6qlrV1hX521L3df2Qq0jZ8kqXG8Mv9K70tMvT\/nxfVIjXkupkbGFTGsQ+91+4x9uJLvhfjrp2QMzu6BiZ0X98TfR2A9eiQ5l8P7olJ1Uc1atMWMuFpR7\/VrmF\/258f3zc8eAI7Xjmtjavb8K73eXZoPsZbU+BMXa0r9\/OtVtfWvt\/ibfZ4Y5WzcauNKqs6yWq95mwezabtfGz5ovp4KlJyXgRalsUOM9WNhfWGhjdDJc+5YbV+EtdERubFO7FkYmq\/Lld4TqrX9GGdEjv+8Zx\/zSY15y3kk9jPVtcL7JXhOjW3anzdF7vLrSg1k7dlK1P1HM2rgETUXtf01lvovXIsyz9t47jcPe3kYT\/qZClp4\/J6sYQygldZn6wDASD1zIDWADdIxwHl1TTW\/e67kvXrkj5n31zMvAL2Yn9CsNT6pw+cir8CC2XHqKU\/N7ku8eYorYBTmDaQRU0f0iS\/UfrCCWAWgCTlpDOrOvNX6R2LerdZnOEc+BwAAAPrrfa87az28EAvytPephfaNaKP2foAMxhmt+L0+c1jce26JFWKrD239GmsPNY4\/Z3kr9fyiGeNEbCDl6jMgAAAAAAAAAAAAAMCL\/xJQLEw=",
          "encoding":"base64",
-         "height":90,
+         "height":100,
          "name":"cao",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":130,
+         "width":150,
          "x":0,
          "y":0
         }, 
         {
          "compression":"zlib",
-         "data":"eJzt3E0KwjAQBtBcUj2A2r0\/vb8JtVCCFlyN7bwHH3RZmCRGOkwpAAAAAAAAAAAA8cboF9ip4R3yGFZCHs8uw+I5u0z74dMaYJJpP\/TnAdN+ONQca07B70Kctg7ONZeaa4m\/M\/k\/FKOdi7eae82jOC8BAAAAAADWZOq54Dvf04A98vtGM\/daWg+47wBbE90DS6xl\/d1n8lrWXj90bmoPAAAAALAdZgTSmBFIo\/4A8Dv36NzMXY81lv+Yn9rPW9ZDmdNc++WcaXPY8+rnTJNTP2caAAAAAAAAAAAAYGteEmgxOw==",
+         "data":"eJzt2kty1DAQANC+T4BFgEWARRPufyc8K6ZCBJbHbfnzXpU2KUfqUnWPZEsR7NXT1D5M7ePUPg2Opdfo2EePv2fPU\/s8tS9T+9rxf9VzOqf\/pbGvZfT4N6NzuzX+y9S+Te371H509LdkTnvmYE7\/S2Nfy+jxb0bndmv8nNrPqb1O7VdHf0vmtGcO5vSfsSz2tYwe\/2Z0bq89fkb\/nPbEsKT\/q3n7+3\/V2tpDDGcyeg28mtF72a2MXgOPZm5etJ67Sh1n+P3vMTcvWs+pY94zNy9az2WoY\/6WMS8v5j4HsBdXef9jW1d5\/2Nb3v+okGH\/DgAAcEa+e1LBd08q+O5JhQzfPQEAAADYF2c3VGid3dznG\/Rqnd3c5xv0ynj\/7OY+32AtGX\/yDarY31PB3SwquJtFhQx3s4DjsYengj08FezhqZBhDw8AAAAAAC3Ok6ngPJkKzpOpkOE8GQAAAAAAAAA4Jvf\/qOD+HxXc\/6NChvt\/wP48jQ6AU3oeHQCn9DI6AE4pRwcAAIWcyVDBmQwVnMlQIcOZDHBu9vtUsN\/fztFq+JF497DfP9p8L3W0Gn4k3ozx+\/0jzPcaub+HGu5xtHjfOkL8a+R+xvga7pExLt416jhj\/\/P9v9y\/ylq+lSOsYWvI+HfuX2EeWrVTUVNHWMO2cIV5aNVORU1l7H8N20LG+eehVTtXqCnqZLxfO62\/wyN+AxKDZlI=",
          "encoding":"base64",
-         "height":90,
-         "name":"zhangai",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":130,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "compression":"zlib",
-         "data":"eJzt3LluwzAMgOFsabun7d5j7vUwad\/\/QSoOQgQhPuTIoij+H6CpKGRQoinbRA4HaHoJ4zWMtzDela9lFMcw7sK4D+NB+VrW+gzjK4zvMH4U5o8x2\/I\/vcb5FMZjGE9hPCtfi7a1axVjVrKuvcf51nts7\/u8xNq1ijErWdfea9mt99je93mJtWsVY1ayrtq1bEqtPO59n5fI12opRvm6Wrw31srjXvd5DaUxsnhvHCmP97IUozz\/LcZ05DyuZSlGef4T07FN1X2L+Y\/tpuo++e8LeQ9B3gMAgBbO2hcwqPOB2HpzvjIAXJAXALgH4BrtsxP7Ut+H9gU4kH6Dhh9570H6DRp+5L0H6Tdo+JH3HqTfoOHHXC+7xT511JHWCYt96qgjrRP0q\/mV1gn61QAAAPpEzwUAYFTUN0ScdwAAFmn3wELXtbVnLwAAAADz6FuGoG8Zgr5l32ItoG\/ZN2oBBLUAglrgk\/bzIb8V2AeeDyF4PoTg+RAAbOEc7Vu+\/uyFtnrOv56vDQDQ1t6\/Mx3fL6NPv2H8NZgnvl+Gb\/H9MnyL75cB+KHdb4A+0G8AQb8BxJp+A2oHBLUDgtoBQa8aRsa5Z7vWsdtzPs49F6Vxbh27Peezdu7RzIl8vtax23M+a+cezZzI52sduxrzjXIO0MyJufmsxHeUc4Dm\/WtuvpJ9oLlnrJ0DUlNxaxnP48LfS\/JMMyetnQNSU3FrGc\/Twt9L8sxyTmqailvLeMpc\/5s3Qus=",
-         "encoding":"base64",
-         "height":90,
+         "height":100,
          "name":"yun",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":130,
+         "width":150,
          "x":0,
          "y":0
         }, 
@@ -76,436 +63,20 @@
                  "name":"pos",
                  "properties":
                     {
-                     "h":"72",
-                     "w":"112"
+                     "h":81,
+                     "w":132
                     },
                  "propertytypes":
                     {
-                     "h":"string",
-                     "w":"string"
+                     "h":"int",
+                     "w":"int"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":10,
                  "x":630,
-                 "y":5670
-                }, 
-                {
-                 "height":0,
-                 "id":14,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":71,
-                         "y":0.5
-                        }, 
-                        {
-                         "x":71,
-                         "y":93
-                        }, 
-                        {
-                         "x":-0.5,
-                         "y":92.5
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1048.5,
-                 "y":1239.5
-                }, 
-                {
-                 "height":0,
-                 "id":15,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":345,
-                         "y":3
-                        }, 
-                        {
-                         "x":346,
-                         "y":-73
-                        }, 
-                        {
-                         "x":492,
-                         "y":-71
-                        }, 
-                        {
-                         "x":499,
-                         "y":167
-                        }, 
-                        {
-                         "x":360,
-                         "y":168
-                        }, 
-                        {
-                         "x":360,
-                         "y":236
-                        }, 
-                        {
-                         "x":290,
-                         "y":236
-                        }, 
-                        {
-                         "x":290,
-                         "y":307
-                        }, 
-                        {
-                         "x":-2,
-                         "y":307
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":6716,
-                 "y":1308
-                }, 
-                {
-                 "height":0,
-                 "id":16,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":145,
-                         "y":1
-                        }, 
-                        {
-                         "x":144,
-                         "y":166
-                        }, 
-                        {
-                         "x":-2,
-                         "y":166
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":6858,
-                 "y":2567
-                }, 
-                {
-                 "height":0,
-                 "id":17,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":135,
-                         "y":1
-                        }, 
-                        {
-                         "x":136,
-                         "y":-74
-                        }, 
-                        {
-                         "x":286,
-                         "y":-74
-                        }, 
-                        {
-                         "x":286,
-                         "y":0
-                        }, 
-                        {
-                         "x":356,
-                         "y":2
-                        }, 
-                        {
-                         "x":355,
-                         "y":69
-                        }, 
-                        {
-                         "x":496,
-                         "y":73
-                        }, 
-                        {
-                         "x":496,
-                         "y":238
-                        }, 
-                        {
-                         "x":427,
-                         "y":237
-                        }, 
-                        {
-                         "x":427,
-                         "y":380
-                        }, 
-                        {
-                         "x":134,
-                         "y":379
-                        }, 
-                        {
-                         "x":135,
-                         "y":234
-                        }, 
-                        {
-                         "x":-2,
-                         "y":234
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":6998,
-                 "y":4529
-                }, 
-                {
-                 "height":0,
-                 "id":18,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":146,
-                         "y":1
-                        }, 
-                        {
-                         "x":145,
-                         "y":92
-                        }, 
-                        {
-                         "x":-2,
-                         "y":91
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":4618,
-                 "y":4602
-                }, 
-                {
-                 "height":0,
-                 "id":19,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":289,
-                         "y":2
-                        }, 
-                        {
-                         "x":288,
-                         "y":163
-                        }, 
-                        {
-                         "x":144,
-                         "y":163
-                        }, 
-                        {
-                         "x":147,
-                         "y":231
-                        }, 
-                        {
-                         "x":-1,
-                         "y":229
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1956,
-                 "y":4113
-                }, 
-                {
-                 "height":0,
-                 "id":20,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":138,
-                         "y":1
-                        }, 
-                        {
-                         "x":139,
-                         "y":-72
-                        }, 
-                        {
-                         "x":356,
-                         "y":-71
-                        }, 
-                        {
-                         "x":356,
-                         "y":-3
-                        }, 
-                        {
-                         "x":427,
-                         "y":-1
-                        }, 
-                        {
-                         "x":426,
-                         "y":167
-                        }, 
-                        {
-                         "x":217,
-                         "y":166
-                        }, 
-                        {
-                         "x":217,
-                         "y":237
-                        }, 
-                        {
-                         "x":68,
-                         "y":236
-                        }, 
-                        {
-                         "x":68,
-                         "y":163
-                        }, 
-                        {
-                         "x":-4,
-                         "y":163
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":4198,
-                 "y":3200
-                }, 
-                {
-                 "height":0,
-                 "id":21,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":75.5,
-                         "y":0.5
-                        }, 
-                        {
-                         "x":75,
-                         "y":93
-                        }, 
-                        {
-                         "x":0,
-                         "y":92
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":4968,
-                 "y":1661.5
-                }, 
-                {
-                 "height":0,
-                 "id":22,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":138.667,
-                         "y":1.33333
-                        }, 
-                        {
-                         "x":140,
-                         "y":-140
-                        }, 
-                        {
-                         "x":290.667,
-                         "y":-137.333
-                        }, 
-                        {
-                         "x":292,
-                         "y":66.6667
-                        }, 
-                        {
-                         "x":500,
-                         "y":72
-                        }, 
-                        {
-                         "x":500,
-                         "y":238.667
-                        }, 
-                        {
-                         "x":-1.33333,
-                         "y":241.333
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2444,
-                 "y":1589.33
-                }, 
-                {
-                 "height":0,
-                 "id":23,
-                 "name":"coll",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":76.5,
-                         "y":1
-                        }, 
-                        {
-                         "x":76.5,
-                         "y":71
-                        }, 
-                        {
-                         "x":217.5,
-                         "y":72.5
-                        }, 
-                        {
-                         "x":217,
-                         "y":232
-                        }, 
-                        {
-                         "x":68,
-                         "y":231
-                        }, 
-                        {
-                         "x":69,
-                         "y":161.5
-                        }, 
-                        {
-                         "x":-1.5,
-                         "y":161.5
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1327,
-                 "y":2851
+                 "y":6300
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -514,25 +85,25 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":24,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":70,
  "tilesets":[
         {
-         "columns":14,
+         "columns":7,
          "firstgid":1,
-         "image":"dige.png",
+         "image":"..\/..\/..\/..\/cocos-proj\/Snake\/Resources\/res\/game\/map\/dige.png",
          "imageheight":721,
-         "imagewidth":1024,
+         "imagewidth":512,
          "margin":0,
          "name":"dige",
          "spacing":0,
-         "tilecount":140,
+         "tilecount":70,
          "tileheight":70,
          "tilewidth":70
         }],
  "tilewidth":70,
  "version":1,
- "width":130
+ "width":150
 }

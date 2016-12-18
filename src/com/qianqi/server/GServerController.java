@@ -92,6 +92,23 @@ public class GServerController {
 			}			
 			if(room != null && room.getSessionNum() < GServerConfig.maxRoomSessions)
 			{
+//				GBubble b = room.find(gs.getUser().getUid());
+//				if(b != null)
+//				{
+//					//找到机器人，解除被携带 离开房间的时候执行
+//					for(String uid : b.getRobotUid())
+//					{
+//						GBubble conPlane = room.findRobot(uid);
+//						if(conPlane != null)
+//						{
+//							conPlane.setBubbleId(0);
+//						}
+//					}
+//					b.getRobotUid().clear();
+//					//清除房间数据
+//					room.remove(room.findSessionId(gs.getUser().getUid()));
+//				}
+				
 				bubble.setRoomId(room.getRoomId());
 				gs.setRoomId(room.getRoomId());
 				room.add(gs.getSession().getId(), bubble);			

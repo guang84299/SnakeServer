@@ -72,11 +72,11 @@ public class GModeGame {
 	public synchronized void move(IoSession session, String data)
 	{
 		JSONObject obj = JSONObject.fromObject(data);
-		float dirX = (float) obj.getDouble("dirX");
-	    float dirY = (float) obj.getDouble("dirY");
-	    float x = (float) obj.getDouble("x");
-	    float y = (float) obj.getDouble("y");
-	    float rotate = (float) obj.getDouble("rotate");
+//		float dirX = (float) obj.getDouble("dirX");
+//	    float dirY = (float) obj.getDouble("dirY");
+//	    float x = (float) obj.getDouble("x");
+//	    float y = (float) obj.getDouble("y");
+	    float angle = (float) obj.getDouble("angle");
 	    boolean robot = obj.getBoolean("robot");
 	    boolean speedUp = obj.getBoolean("speedUp");
 	    String uid = obj.getString("uid");
@@ -97,25 +97,24 @@ public class GModeGame {
 				bubble.setState(GBubble.STATE.SPEEDUP);
 			else
 				bubble.setState(GBubble.STATE.MOVE);
-			bubble.setDirX(dirX);
-			bubble.setDirY(dirY);
-			bubble.setX(x);
-			bubble.setY(y);
-			bubble.setRotate(rotate);
-					
-			GData data3 = new GData(GProtocol.MODE_GAME_MOVE_RESULT, obj.toString());
-			data = data3.pack();
-//			gsession.send(data);
+//			bubble.setDirX(dirX);
+//			bubble.setDirY(dirY);
+//			bubble.setX(x);
+//			bubble.setY(y);
+//			bubble.setRotate(rotate);
+			bubble.setAngle(angle);
+//			GData data3 = new GData(GProtocol.MODE_GAME_MOVE_RESULT, obj.toString());
+//			data = data3.pack();
 			
-			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
-			{
-				long sessionId = entry.getKey();
-				GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
-				if(gs != null)
-				{
-					gs.send(data);
-				}
-			}	
+//			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+//			{
+//				long sessionId = entry.getKey();
+//				GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
+//				if(gs != null)
+//				{
+//					gs.send(data);
+//				}
+//			}	
 		}	
 	}
 	//停止移动
@@ -134,14 +133,12 @@ public class GModeGame {
 	    float rotate = (float) obj.getDouble("rotate");
 	    boolean speedUp = obj.getBoolean("speedUp");
 	    
-	    bubble.setX(x);
-	    bubble.setY(y);
+//	    bubble.setX(x);
+//	    bubble.setY(y);
 	    bubble.setRotate(rotate);
 	    bubble.setState(GBubble.STATE.IDLE);
 
 		obj.put("uid", bubble.getUid());
-		if(speedUp)
-		obj.put("hp", bubble.getCurrHp());
 		
 		GData data3 = new GData(GProtocol.MODE_GAME_STOPMOVE_RESULT, obj.toString());
 		data = data3.pack();
@@ -193,7 +190,7 @@ public class GModeGame {
 		}
 		Collections.sort(list, new Comparator<GBubble>(){
             public int compare(GBubble arg0, GBubble arg1) {
-                return arg1.getKill() - arg0.getKill();
+                return arg1.getExp() - arg0.getExp();
             }
         });
 		List<GRank> ranks = new ArrayList<GRank>();
@@ -205,6 +202,7 @@ public class GModeGame {
 			rank.setUid(bubble.getUid());
 			rank.setName(bubble.getName());
 			rank.setKill(bubble.getKill());
+			rank.setExp(bubble.getExp());
 			rank.setDie(bubble.getDie());
 			rank.setRewardNum(GServerConfig.getCrystalForRank(rank.getRank()));
 			ranks.add(rank);
@@ -252,6 +250,27 @@ public class GModeGame {
 		GRoom room = GServerController.getInstance().findRoom(gsession.getRoomId());
 		
 		GModeUser.getInstance().updateUser(gsession.getUser());
+		
+		if(room != null)
+		{
+			GBubble bubble = room.find(sessionId);
+			if(bubble != null)
+			{
+				//找到机器人，解除被携带 离开房间的时候执行
+				for(String uid : bubble.getRobotUid())
+				{
+					GBubble conPlane = room.findRobot(uid);
+					if(conPlane != null)
+					{
+						conPlane.setBubbleId(0);
+					}
+				}
+				bubble.getRobotUid().clear();
+			}		
+			//清除房间数据
+			room.remove(sessionId);
+		}
+		
 		
 		JSONObject obj = new JSONObject();	
 		obj.put("uid", gsession.getUser().getUid());
@@ -338,6 +357,7 @@ public class GModeGame {
 		JSONObject obj = JSONObject.fromObject(data);
 		int id = obj.getInt("id");
 		int type = obj.getInt("type");
+		int exp = obj.getInt("exp");
 		boolean robot = obj.getBoolean("robot");
 		String uid = obj.getString("uid");
 		
@@ -349,8 +369,8 @@ public class GModeGame {
 		GBlock block = room.getBlocks().get(id);
 		if(block == null)
 			return;
-		int bulletId = block.getBulletId();
-		obj.put("bulletId", bulletId);
+		int blockType = block.getBlockType();
+		obj.put("blockType", blockType);
 		
 		room.removeBlock(id);
 		
@@ -363,7 +383,7 @@ public class GModeGame {
 		{
 			if(type == 0)
 			{
-				bubble.setExp(bubble.getExp()+1);
+				bubble.setExp(bubble.getExp()+exp);
 				if(bubble.getExp() > GServerConfig.getExpForLevel(bubble.getLevel()+1) && 
 						bubble.getLevel() < GServerConfig.exps.size())
 				{
@@ -382,12 +402,7 @@ public class GModeGame {
 			//类型为2为血袋
 			else if(type == 2)
 			{
-				int hp = (int) (bubble.getHP()*0.5f);
-				bubble.setCurrHp(bubble.getCurrHp() + hp);
-				if(bubble.getCurrHp() > bubble.getHP())
-					bubble.setCurrHp(bubble.getHP());
 				
-				obj.put("currHp", bubble.getCurrHp());
 			}
 			GData data3 = new GData(GProtocol.MODE_GAME_EATBLOCK_RESULT, obj.toString());
 			data = data3.pack();
@@ -480,25 +495,9 @@ public class GModeGame {
 
 		boolean target_robot = obj.getBoolean("target_robot");
 		String targetUid = obj.getString("target");
-		String bulletUid = obj.getString("uid");
+		boolean bubble_robot = obj.getBoolean("bubble_robot");
+		String bubbleUid = obj.getString("bubble");
 		
-		//获取目标飞机 0是和障碍物碰撞
-		if("0".equals(targetUid))
-		{
-			//下发通知
-			GData data3 = new GData(GProtocol.MODE_GAME_BULLETCOLLISION_RESULT, obj.toString());
-			data = data3.pack();
-			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
-			{
-				long sessionId = entry.getKey();
-				GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
-				if(gs != null)
-				{
-					gs.send(data);
-				}
-			}
-			return;
-		}
 		GBubble targetBubble = null;
 		if(target_robot)
 		{
@@ -509,123 +508,115 @@ public class GModeGame {
 	        GSession targetSession = GSessionHandler.getInstance().getSessionByUid(targetUid);
 	        targetBubble = room.find(targetSession.getSession().getId());
 		}
+		GBubble bubble = null;
+		GSession bubbleSession = null;
+		//0是和边界碰撞
+		if(!bubbleUid.equals("0"))
+		{
+			if(bubble_robot)
+			{
+				bubble = room.findRobot(bubbleUid);
+			}
+			else
+			{
+				bubbleSession = GSessionHandler.getInstance().getSessionByUid(bubbleUid);
+		        bubble = room.find(bubbleSession.getSession().getId());
+			}
+		}
+		
+		JSONObject dieJson = null;
 		if(targetBubble != null)
 		{
-			//对目标飞机进行伤害计算
-			int id = obj.getInt("id");
-			int tid = obj.getInt("tid");
-			int damage = obj.getInt("damage");
-			
-			targetBubble.setCurrHp(targetBubble.getCurrHp() - damage);
-			
-			boolean die = targetBubble.getCurrHp() <= 0 ? true : false;
-			int currHp = targetBubble.getCurrHp();
-			
-			JSONObject dieJson = null;
-			if(die)
-			{		
-				GBubble bulletBubble = null;
-				if(targetBubble.getState() != GBubble.STATE.DIE)
-				{
-					//子弹方击杀加一
-					bulletBubble = room.findRobot(bulletUid);
-					GSession bulletSession = null;
-					//如果bulletBubble == null 子弹方不是机器人
-					if(bulletBubble == null)
-					{
-						bulletSession =  GSessionHandler.getInstance().getSessionByUid(bulletUid);
-						bulletBubble = room.find(bulletSession.getSession().getId());
-					}					
-					if(bulletBubble != null)
-					{
-						bulletBubble.setKill(bulletBubble.getKill()+1);
-						//不是机器人才会更新最大击杀
-						if(bulletSession != null)
-						{
-							int cumKill = bulletSession.getUser().getCumKill() + 1;
-							bulletSession.getUser().setCumKill(cumKill);
-
-							if(bulletBubble.getKill() > bulletSession.getUser().getMaxKill())
-							{
-								bulletSession.getUser().setMaxKill(bulletBubble.getKill());
-							}
-						}					
-					}	
-				}
-				
-				targetBubble.setState(GBubble.STATE.DIE);
-				targetBubble.setDie(targetBubble.getDie()+1);
-				targetBubble.setCurrHp(0);
-				currHp = targetBubble.getCurrHp();
-				if(target_robot)
-				{
-					//找到机器人的携带者，解除携带				
-					GSession conSession = GSessionHandler.getInstance().getGSessionById(targetBubble.getBubbleId());
-					if(conSession != null)
-					{
-						GBubble conPlane = room.find(conSession.getSession().getId());
-						if(conPlane != null)
-						{
-							conPlane.getRobotUid().remove(targetUid);
-						}
-					}					
-				}
-				else
-				{					
-					dieJson = new JSONObject();
-					//先计算排名
-					List<GBubble> list = new ArrayList<GBubble>();
-					for(GBubble bubble2 : room.getBubbles().values())
-					{
-						list.add(bubble2);
-					}
-					for(GBubble bubble2 : room.getRobots().values())
-					{
-						list.add(bubble2);
-					}
-					Collections.sort(list, new Comparator<GBubble>(){
-			            public int compare(GBubble arg0, GBubble arg1) {
-			                return arg1.getExp() - arg0.getExp();
-			            }
-			        });
-					int rank = 1;
-					for(int i=0;i<list.size();i++)
-					{
-						GBubble bubble2 = list.get(i);
-						if(bubble2.getUid().equals(targetBubble.getUid()))
-						{
-							rank = i+1;
-							break;
-						}				
-					}
-					
-					
-					dieJson.put("killMe", bulletUid);
-					dieJson.put("killMeName", bulletBubble.getName());
-					dieJson.put("rank", rank);
-					dieJson.put("kill", targetBubble.getKill());
-				}
-			}
-				
-			JSONObject obj2 = new JSONObject();
-			obj2.put("id", id);
-			obj2.put("tid", tid);
-			obj2.put("currHp", currHp);
-			obj2.put("die", die);
-			obj2.put("target", targetUid);
-			obj2.put("target_robot", target_robot);
-			obj2.put("dieData", dieJson);
-			//下发通知
-			GData data3 = new GData(GProtocol.MODE_GAME_BULLETCOLLISION_RESULT, obj2.toString());
-			data = data3.pack();
-			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+			if(bubble != null)
 			{
-				long sessionId = entry.getKey();
-				GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
-				if(gs != null )
+				if(bubble.getState() == GBubble.STATE.DIE)
 				{
-					gs.send(data);
+					return;
 				}
+				bubble.setKill(bubble.getKill()+1);
+				//不是机器人才会更新最大击杀
+				if(bubbleSession != null)
+				{
+					int cumKill = bubbleSession.getUser().getCumKill() + 1;
+					bubbleSession.getUser().setCumKill(cumKill);
+
+					if(bubble.getKill() > bubbleSession.getUser().getMaxKill())
+					{
+						bubbleSession.getUser().setMaxKill(bubble.getKill());
+					}
+				}					
+			}	
+				
+			targetBubble.setState(GBubble.STATE.DIE);
+			targetBubble.setDie(targetBubble.getDie()+1);
+			if(target_robot)
+			{
+				//找到机器人的携带者，解除携带				
+				GSession conSession = GSessionHandler.getInstance().getGSessionById(targetBubble.getBubbleId());
+				if(conSession != null)
+				{
+					GBubble conPlane = room.find(conSession.getSession().getId());
+					if(conPlane != null)
+					{
+						conPlane.getRobotUid().remove(targetUid);
+					}
+				}					
+			}
+			else
+			{					
+				dieJson = new JSONObject();
+				//先计算排名
+				List<GBubble> list = new ArrayList<GBubble>();
+				for(GBubble bubble2 : room.getBubbles().values())
+				{
+					list.add(bubble2);
+				}
+				for(GBubble bubble2 : room.getRobots().values())
+				{
+					list.add(bubble2);
+				}
+				Collections.sort(list, new Comparator<GBubble>(){
+		            public int compare(GBubble arg0, GBubble arg1) {
+		                return arg1.getExp() - arg0.getExp();
+		            }
+		        });
+				int rank = 1;
+				for(int i=0;i<list.size();i++)
+				{
+					GBubble bubble2 = list.get(i);
+					if(bubble2.getUid().equals(targetBubble.getUid()))
+					{
+						rank = i+1;
+						break;
+					}				
+				}
+				
+				
+				dieJson.put("killMe", bubbleUid);
+				if(bubble != null)
+					dieJson.put("killMeName", bubble.getName());
+				else
+					dieJson.put("killMeName", bubbleUid);
+				dieJson.put("rank", rank);
+				dieJson.put("exp", targetBubble.getExp());
+				dieJson.put("kill", targetBubble.getKill());
+			}
+		}
+				
+		JSONObject obj2 = new JSONObject();
+		obj2.put("target", targetUid);
+		obj2.put("target_robot", target_robot);
+		obj2.put("dieData", dieJson);
+		//下发通知
+		GData data3 = new GData(GProtocol.MODE_GAME_BULLETCOLLISION_RESULT, obj2.toString());
+		data = data3.pack();
+		for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+		{
+			long sessionId = entry.getKey();
+			GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
+			if(gs != null )
+			{
+				gs.send(data);
 			}
 		}
 	}
@@ -666,11 +657,12 @@ public class GModeGame {
 	    float y = (float) obj.getDouble("y");
 	    float rotate = (float) obj.getDouble("rotate");
 	    
-	    bubble.setX(x);
-	    bubble.setY(y);
+//	    bubble.setX(x);
+//	    bubble.setY(y);
 	    bubble.setRotate(rotate);
 		
-		if(bubble.getCurrHp() > bubble.getHP()*0.1f)
+//		if(bubble.getCurrHp() > bubble.getHP()*0.1f)
+	    if(true)
 		{
 //			int hp = (int) (bubble.getHP()*0.1f);
 //			if(hp < 20)
@@ -680,7 +672,7 @@ public class GModeGame {
 			bubble.setState(GBubble.STATE.SPEEDUP);
 			
 			obj.put("uid", gsession.getUser().getUid());
-			obj.put("hp", bubble.getCurrHp());
+//			obj.put("hp", bubble.getCurrHp());
 			//下发通知
 			GData data3 = new GData(GProtocol.MODE_GAME_SPEEDUP_RESULT, obj.toString());
 			data = data3.pack();
@@ -717,12 +709,12 @@ public class GModeGame {
 	    float y = (float) obj.getDouble("y");
 	    float rotate = (float) obj.getDouble("rotate");
 	    
-	    bubble.setX(x);
-	    bubble.setY(y);
+//	    bubble.setX(x);
+//	    bubble.setY(y);
 	    bubble.setRotate(rotate);
 	    
 	    bubble.setState(GBubble.STATE.IDLE);
-	    obj.put("hp", bubble.getCurrHp());
+//	    obj.put("hp", bubble.getCurrHp());
 		//下发通知
 		GData data3 = new GData(GProtocol.MODE_GAME_STOPSPEEDUP_RESULT, obj.toString());
 		data = data3.pack();
@@ -753,7 +745,7 @@ public class GModeGame {
 			}
 			Collections.sort(list, new Comparator<GBubble>(){
 	            public int compare(GBubble arg0, GBubble arg1) {
-	                return arg1.getKill() - arg0.getKill();
+	                return arg1.getExp() - arg0.getExp();
 	            }
 	        });
 			List<GRank> ranks = new ArrayList<GRank>();
@@ -805,12 +797,10 @@ public class GModeGame {
 			bubble.setState(GBubble.STATE.IDLE);			
 			bubble.setDirX(0);
 			bubble.setDirY(1);
-			bubble.setHP(newBubble.getHP());
-			bubble.setInitHp(newBubble.getInitHp());
-			bubble.setCurrHp(newBubble.getCurrHp());
+			bubble.setAngle(90);
 			bubble.setLevel(0);
 			bubble.setExp(0);
-			bubble.setGrow(1);
+			bubble.setGrow(newBubble.getGrow());
 			bubble.setSkinId(gsession.getUser().getSkinId());
 			
 			while(room.isCoincide(bubble))
@@ -875,17 +865,67 @@ public class GModeGame {
 			float y = (float) obj.getDouble("y");
 			targetBubble.setX(x);
 			targetBubble.setY(y);
+			JSONArray arr = obj.getJSONArray("pos");
+			int exp = targetBubble.getExp() / arr.size();
+			if(exp < 1)
+				exp = 1;
 			//掉落水滴
-			int blockNum = (targetBubble.getKill() + 1)*GServerConfig.killBlock;
-			room.getDrops().add(new GDrop(blockNum, (int)targetBubble.getX(), (int)targetBubble.getY()));
-			//从房间移除
+			room.getDrops().add(new GDrop(exp,arr));
+			//机器人复活
 			if(target_robot)
 			{
-				room.removeRobot(targetUid);
+				robotRelived(gsession,targetBubble);
 			}				
 		}		
 	}
-	
+	//机器人复活
+	public synchronized void robotRelived(GSession gsession, GBubble targetBubble)
+	{
+		GRoom room = GServerController.getInstance().findRoom(gsession.getRoomId());
+		if(room == null)
+			return;
+		GBubble bubble = targetBubble;
+		if(bubble != null)
+		{
+			//初始化数据
+			GBubble newBubble = GModelTool.getBubble(bubble.getUid(),true,room.getMapWidth(),room.getMapHeight());
+			
+			bubble.setX(newBubble.getX());
+			bubble.setY(newBubble.getY());
+			bubble.setState(GBubble.STATE.IDLE);			
+			bubble.setDirX(0);
+			bubble.setDirY(1);
+			bubble.setAngle(90);
+			bubble.setLevel(0);
+			bubble.setExp(0);
+			bubble.setGrow(newBubble.getGrow());
+			bubble.setSkinId(gsession.getUser().getSkinId());
+			bubble.setBubbleId(newBubble.getBubbleId());
+			
+			while(room.isCoincide(bubble))
+			{
+				bubble.setX(GTools.getRand(100, room.getMapWidth()-100));
+				bubble.setY(GTools.getRand(100, room.getMapHeight()-100));
+			}
+			
+			JSONObject bubble_data = JSONObject.fromObject(bubble);		
+			JSONObject obj = new JSONObject();
+			obj.put("robot",bubble_data);
+			
+			String otherData = obj.toString();
+			GData otherData2 = new GData(GProtocol.MODE_GAME_ADDROBOT_RESULT, otherData);
+			otherData = otherData2.pack();
+			for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+			{
+				long sessionId = entry.getKey();
+				GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
+				if(gs != null)
+				{
+					gs.send(otherData);
+				}
+			}	
+		}
+	}
 	//泡泡碰撞
 	public synchronized void coll(IoSession session, String data)
 	{
@@ -939,13 +979,17 @@ public class GModeGame {
 		if(bubble == null)
 			return;
 		
-		float x = (float) obj.getDouble("x");
-	    float y = (float) obj.getDouble("y");
+//		float x = (float) obj.getDouble("x");
+//	    float y = (float) obj.getDouble("y");
 	    float rotate = (float) obj.getDouble("rotate");
+		float dirX = (float) obj.getDouble("dirX");
+		float dirY = (float) obj.getDouble("dirY");
 	    int state = obj.getInt("state");
 	    
-	    bubble.setX(x);
-	    bubble.setY(y);
+//	    bubble.setX(x);
+//	    bubble.setY(y);
+	    bubble.setDirX(dirX);
+	    bubble.setDirY(dirY);
 	    bubble.setRotate(rotate);
 	    if(state == 0)
 	    	bubble.setState(GBubble.STATE.BORN);
@@ -959,69 +1003,215 @@ public class GModeGame {
 	    	bubble.setState(GBubble.STATE.DIE);  
 	    
 	    
-	    GData data3 = new GData(GProtocol.MODE_GAME_UPDATEPOS_RESULT, obj.toString());
-		data = data3.pack();
-		for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
-		{
-			long sessionId = entry.getKey();
-			GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
-			if(gs != null)
-			{
-				gs.send(data);
-			}
-		}
+//	    GData data3 = new GData(GProtocol.MODE_GAME_UPDATEPOS_RESULT, obj.toString());
+//		data = data3.pack();
+//		for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+//		{
+//			long sessionId = entry.getKey();
+//			GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId);
+//			if(gs != null)
+//			{
+//				gs.send(data);
+//			}
+//		}
 	}
-	//发送位置
-	public synchronized void sendPos(long roomId)
+	public synchronized void updateRotate(long roomId,long dt)
 	{
 		GRoom room = GServerController.getInstance().findRoom(roomId);
-		JSONArray arr = new JSONArray();
+		if(room == null)
+			return;
+		float time = dt / 1000.f;
 		for(GBubble bubble : room.getBubbles().values())
 		{
-//			if(bubble.getState() == GBubble.STATE.MOVE || bubble.getState() == GBubble.STATE.SPEEDUP)
-//			{
-				JSONObject obj = new JSONObject();
-				obj.put("x", bubble.getX());
-				obj.put("y", bubble.getY());
-				obj.put("rotate", bubble.getRotate());
-				obj.put("uid", bubble.getUid());
-				int state = 0;
-				if(bubble.getState() == GBubble.STATE.IDLE)		
-					state = 1;
-				else if(bubble.getState() == GBubble.STATE.MOVE)		
-					state = 2;
-				else if(bubble.getState() == GBubble.STATE.SPEEDUP)		
-					state = 3;
-				else if(bubble.getState() == GBubble.STATE.DIE)		
-					state = 4;
-				obj.put("state", state);
+			if(bubble.getState() != GBubble.STATE.DIE)
+			{
+				float angle = bubble.getRotate();
+				if(bubble.getAngle() > bubble.getRotate())
+				{
+					float dis = bubble.getAngle() - bubble.getRotate();
+					float dis2 = 360 - bubble.getAngle() + bubble.getRotate();
+					if(dis < dis2)
+					{
+						angle = angle + bubble.getRotateSpeed()*time;
+						if(angle > bubble.getAngle())
+							angle = bubble.getAngle();
+					}
+					else
+					{
+						angle = angle - bubble.getRotateSpeed()*time;
+						if(angle < 0)
+							angle = 360 + angle;
+					}
+				}
+				else
+				{
+					float dis = bubble.getRotate() - bubble.getAngle();
+					float dis2 = 360 - bubble.getRotate() + bubble.getAngle();
+					if(dis < dis2)
+					{
+						angle = angle - bubble.getRotateSpeed()*time;
+						if(angle < bubble.getAngle())
+							angle = bubble.getAngle();
+					}
+					else
+					{
+						angle = angle + bubble.getRotateSpeed()*time;
+						if(angle > 360)
+							angle = angle - angle;
+					}
+				}
+//				System.out.println(bubble.getRotate() + "  "+angle + "  "+bubble.getAngle());
+
+				bubble.setRotate(angle);
 				
-				arr.add(obj);
-//			}		
+				bubble.setDirX(GModelTool.getDirX(angle));
+				bubble.setDirY(GModelTool.getDirY(angle));				
+			}		
 		}
 		
 		for(GBubble bubble : room.getRobots().values())
 		{
-//			if(bubble.getState() == GBubble.STATE.MOVE)
-//			{
+			if(bubble.getState() != GBubble.STATE.DIE)
+			{
+				float angle = bubble.getRotate();
+				if(bubble.getAngle() > bubble.getRotate())
+				{
+					float dis = bubble.getAngle() - bubble.getRotate();
+					float dis2 = 360 - bubble.getAngle() + bubble.getRotate();
+					if(dis < dis2)
+					{
+						angle = angle + bubble.getRotateSpeed()*time;
+						if(angle > bubble.getAngle())
+							angle = bubble.getAngle();
+					}
+					else
+					{
+						angle = angle - bubble.getRotateSpeed()*time;
+						if(angle < 0)
+							angle = 360 + angle;
+					}
+				}
+				else
+				{
+					float dis = bubble.getRotate() - bubble.getAngle();
+					float dis2 = 360 - bubble.getRotate() + bubble.getAngle();
+					if(dis < dis2)
+					{
+						angle = angle - bubble.getRotateSpeed()*time;
+						if(angle < bubble.getAngle())
+							angle = bubble.getAngle();
+					}
+					else
+					{
+						angle = angle + bubble.getRotateSpeed()*time;
+						if(angle > 360)
+							angle = angle - angle;
+					}
+				}
+				bubble.setRotate(angle);
+				
+				bubble.setDirX(GModelTool.getDirX(angle));
+				bubble.setDirY(GModelTool.getDirY(angle));
+			}		
+		}
+	}
+	//发送位置
+	public synchronized void sendPos(long roomId,long dt)
+	{
+		GRoom room = GServerController.getInstance().findRoom(roomId);
+		if(room == null)
+			return;
+		float time = dt / 1000.f;
+		JSONArray arr = new JSONArray();
+		for(GBubble bubble : room.getBubbles().values())
+		{
+			if(bubble.getState() != GBubble.STATE.DIE)
+			{
+				boolean up = false;
+				if(bubble.getState() == GBubble.STATE.MOVE || bubble.getExp() <= 0)
+				{
+					float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
+					float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
+					bubble.setX(x);
+					bubble.setY(y);
+				}
+				else if(bubble.getState() == GBubble.STATE.SPEEDUP)
+				{
+					float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
+					float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
+					bubble.setX(x);
+					bubble.setY(y);
+					up = true;
+				}				
+				
 				JSONObject obj = new JSONObject();
 				obj.put("x", bubble.getX());
 				obj.put("y", bubble.getY());
+//				obj.put("dirX", bubble.getDirX());
+//				obj.put("dirY", bubble.getDirY());
 				obj.put("rotate", bubble.getRotate());
 				obj.put("uid", bubble.getUid());
-				int state = 0;
-				if(bubble.getState() == GBubble.STATE.IDLE)		
-					state = 1;
-				else if(bubble.getState() == GBubble.STATE.MOVE)		
-					state = 2;
-				else if(bubble.getState() == GBubble.STATE.SPEEDUP)		
-					state = 3;
-				else if(bubble.getState() == GBubble.STATE.DIE)		
-					state = 4;
-				obj.put("state", state);
+				obj.put("time", time);
+				obj.put("up", up);
+//				int state = 0;
+//				if(bubble.getState() == GBubble.STATE.IDLE)		
+//					state = 1;
+//				else if(bubble.getState() == GBubble.STATE.MOVE)		
+//					state = 2;
+//				else if(bubble.getState() == GBubble.STATE.SPEEDUP)		
+//					state = 3;
+//				else if(bubble.getState() == GBubble.STATE.DIE)		
+//					state = 4;
+//				obj.put("state", state);
 				
 				arr.add(obj);
-//			}		
+			}		
+		}
+		
+		for(GBubble bubble : room.getRobots().values())
+		{
+			if(bubble.getState() != GBubble.STATE.DIE)
+			{
+				boolean up = false;
+				if(bubble.getState() == GBubble.STATE.MOVE || bubble.getExp() <= 0)
+				{
+					float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
+					float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
+					bubble.setX(x);
+					bubble.setY(y);
+				}
+				else if(bubble.getState() == GBubble.STATE.SPEEDUP)
+				{
+					float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
+					float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
+					bubble.setX(x);
+					bubble.setY(y);
+					up = true;
+				}
+
+				
+				JSONObject obj = new JSONObject();
+				obj.put("x", bubble.getX());
+				obj.put("y", bubble.getY());
+//				obj.put("dirX", bubble.getDirX());
+//				obj.put("dirY", bubble.getDirY());
+				obj.put("rotate", bubble.getRotate());
+				obj.put("uid", bubble.getUid());
+				obj.put("time", time);
+				obj.put("up", up);
+//				int state = 0;
+//				if(bubble.getState() == GBubble.STATE.IDLE)		
+//					state = 1;
+//				else if(bubble.getState() == GBubble.STATE.MOVE)		
+//					state = 2;
+//				else if(bubble.getState() == GBubble.STATE.SPEEDUP)		
+//					state = 3;
+//				else if(bubble.getState() == GBubble.STATE.DIE)		
+//					state = 4;
+//				obj.put("state", state);
+				
+				arr.add(obj);
+			}		
 		}
 		
 		GData data3 = new GData(GProtocol.MODE_GAME_UPDATEPOS_RESULT, arr.toString());
@@ -1058,17 +1248,33 @@ public class GModeGame {
 	    int type = obj.getInt("type");//0 减 1加
 	    if(type == 0)
 	    {
-	    	bubble.setCurrHp(bubble.getCurrHp() - bubble.getReduceHP());
-	    	if(bubble.getCurrHp() < 0)
-	    		bubble.setCurrHp(0);
+	    	bubble.setExp(bubble.getExp() - bubble.getReduceHP());
+	    	if(bubble.getExp() < 0)
+	    		bubble.setExp(0);
+	    	
+	    	bubble.setLevel(GServerConfig.getLevelForExp(bubble.getExp()));
+	    	bubble.setGrow(GServerConfig.getGrowForLevel(bubble.getLevel()));
+			
+			obj.put("level", bubble.getLevel());
+			obj.put("exp", bubble.getExp());
+			obj.put("grow", bubble.getGrow());
+			
+			//掉落水滴
+			int x = obj.getInt("x");
+			int y = obj.getInt("y");
+			JSONArray arr = new JSONArray();
+			JSONObject pos = new JSONObject();
+			pos.put("x", x);
+			pos.put("y", y);
+			arr.add(pos);
+			room.getDrops().add(new GDrop(1,arr));
 	    }
 	    else
 	    {
-	    	bubble.setCurrHp(bubble.getCurrHp() + bubble.getRecoverHP());
-	    	if(bubble.getCurrHp() > bubble.getHP())
-	    		bubble.setCurrHp(bubble.getHP());
+//	    	bubble.setCurrHp(bubble.getCurrHp() + bubble.getRecoverHP());
+//	    	if(bubble.getCurrHp() > bubble.getHP())
+//	    		bubble.setCurrHp(bubble.getHP());
 	    }
-	    obj.put("currHp", bubble.getCurrHp());
 	    
 	    GData data3 = new GData(GProtocol.MODE_GAME_UPDATEHP_RESULT, obj.toString());
 		data = data3.pack();
