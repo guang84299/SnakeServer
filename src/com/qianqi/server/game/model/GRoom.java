@@ -181,7 +181,7 @@ public class GRoom {
 						dt = currTime - lastTime;
 						lastTime = currTime;	
 						update(dt);
-						Thread.sleep(30);								
+						Thread.sleep(20);								
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -201,14 +201,14 @@ public class GRoom {
 		time -= dt;
 		
 		updateRotateDt+=dt;
-		if(updateRotateDt >= 50)
+		if(updateRotateDt >= 30)
 		{
 			GModeGame.getInstance().updateRotate(roomId, updateRotateDt);
 			updateRotateDt = 0;
 		}
 		
 		updatePosDt+=dt;
-		if(updatePosDt >= 50)
+		if(updatePosDt >= 60)
 		{
 			GModeGame.getInstance().sendPos(roomId,updatePosDt);
 			updatePosDt = 0;

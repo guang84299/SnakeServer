@@ -29,7 +29,7 @@ public class GUser {
 	//update user set skinNum=1 where id > 0;
 	private int skinNum;
 	private int mvp;
-	//update user set crystal=1 where id > 0;
+	//update user set crystal=1000 where id = 50;
 	private int headId;
 	private int crystal;
 	//update user set skins='1' where id > 0;

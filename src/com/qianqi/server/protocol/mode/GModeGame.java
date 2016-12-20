@@ -1057,7 +1057,7 @@ public class GModeGame {
 					{
 						angle = angle + bubble.getRotateSpeed()*time;
 						if(angle > 360)
-							angle = angle - angle;
+							angle = angle - 360;
 					}
 				}
 //				System.out.println(bubble.getRotate() + "  "+angle + "  "+bubble.getAngle());
@@ -1105,7 +1105,7 @@ public class GModeGame {
 					{
 						angle = angle + bubble.getRotateSpeed()*time;
 						if(angle > 360)
-							angle = angle - angle;
+							angle = angle - 360;
 					}
 				}
 				bubble.setRotate(angle);
@@ -1128,7 +1128,7 @@ public class GModeGame {
 			if(bubble.getState() != GBubble.STATE.DIE)
 			{
 				boolean up = false;
-				if(bubble.getState() == GBubble.STATE.MOVE || bubble.getExp() <= 0)
+				if(bubble.getState() == GBubble.STATE.MOVE)
 				{
 					float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
 					float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
@@ -1137,11 +1137,21 @@ public class GModeGame {
 				}
 				else if(bubble.getState() == GBubble.STATE.SPEEDUP)
 				{
-					float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
-					float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
-					bubble.setX(x);
-					bubble.setY(y);
-					up = true;
+					if(bubble.getExp() <= 0)
+					{
+						float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
+						float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
+						bubble.setX(x);
+						bubble.setY(y);
+					}
+					else
+					{
+						float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
+						float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
+						bubble.setX(x);
+						bubble.setY(y);
+						up = true;
+					}
 				}				
 				
 				JSONObject obj = new JSONObject();
@@ -1173,7 +1183,7 @@ public class GModeGame {
 			if(bubble.getState() != GBubble.STATE.DIE)
 			{
 				boolean up = false;
-				if(bubble.getState() == GBubble.STATE.MOVE || bubble.getExp() <= 0)
+				if(bubble.getState() == GBubble.STATE.MOVE)
 				{
 					float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
 					float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
@@ -1182,11 +1192,21 @@ public class GModeGame {
 				}
 				else if(bubble.getState() == GBubble.STATE.SPEEDUP)
 				{
-					float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
-					float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
-					bubble.setX(x);
-					bubble.setY(y);
-					up = true;
+					if(bubble.getExp() <= 0)
+					{
+						float x = bubble.getDirX()*time*bubble.getSpeed() + bubble.getX();
+						float y = bubble.getDirY()*time*bubble.getSpeed() + bubble.getY();
+						bubble.setX(x);
+						bubble.setY(y);
+					}
+					else
+					{
+						float x = bubble.getDirX()*time*bubble.getsSpeed()+ bubble.getX();
+						float y = bubble.getDirY()*time*bubble.getsSpeed()+ bubble.getY();
+						bubble.setX(x);
+						bubble.setY(y);
+						up = true;
+					}
 				}
 
 				
