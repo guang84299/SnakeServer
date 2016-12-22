@@ -47,7 +47,8 @@ public class GBubble {
     
     //服务器独有属性
     public long currAttackTime = 0;
-//    public List<GPoint> points = new ArrayList<GPoint>();
+    public long killTime = 0;
+    public int killNum = 0;
     
 	public String getUid() {
 		return uid;

@@ -116,7 +116,7 @@ public class GModelTool {
 		GBlock block = new GBlock();
 		block.setId(blockId);
 		block.setType(0);
-		block.setBlockType(GTools.getRand(1,5));
+		block.setBlockType(GTools.getRand(1,7));
 		block.setExp(1);
 		block.setX(GTools.getRand(30, width-30));
 		block.setY(GTools.getRand(30, height-30));

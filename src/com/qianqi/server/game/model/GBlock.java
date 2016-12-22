@@ -10,7 +10,7 @@ public class GBlock {
 	}
 	
 	private int id;
-	private int type;//0:普通水滴 2：血袋
+	private int type;//0:普通水滴 1：掉落水晶 2：血袋
 	private int blockType;
 	private int exp;
 	private float x;

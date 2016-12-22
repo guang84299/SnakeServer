@@ -50,7 +50,7 @@ public class GRoom {
 		robots = new HashMap<String, GBubble>();
 		clounds = new ArrayList<GClound>();
 		drops = new ArrayList<GDrop>();
-		time = GServerConfig.roomTime;
+		time = 8*1000;//GServerConfig.roomTime;
 		lastTime = System.currentTimeMillis();
 		
 		mapId = GTools.getRand(0, GServerConfig.maps.size());
@@ -450,15 +450,29 @@ public class GRoom {
 				JSONArray pos = drop.getPos();
 				int exp = drop.getExp();
 				List<GBlock> list = new ArrayList<GBlock>();
-				for(int i=0;i<pos.size();i++)
+				for(int i=0;i<pos.size()/2;i++)
 				{
 					blockId++;	
-					JSONObject obj = pos.getJSONObject(i);
+					JSONObject obj = pos.getJSONObject(GTools.getRand(0, pos.size()));
 					
 					GBlock block = GModelTool.getBlock(blockId,mapWidth, mapHeight);	
-					block.setX(obj.getInt("x"));
-					block.setY(obj.getInt("y"));
+					int x = obj.getInt("x");
+					int y = obj.getInt("y");
+					int r = GTools.getRand(0, 100);
+					if(r < 50)
+					{
+						x -= GTools.getRand(0, 20);
+						y += GTools.getRand(0, 20);
+					}
+					else
+					{
+						x += GTools.getRand(0, 20);
+						y -= GTools.getRand(0, 20);
+					}
+					block.setX(x);
+					block.setY(y);
 					block.setExp(exp);
+					block.setType(1);
 				
 					list.add(block);
 					blocks.put(blockId, block);

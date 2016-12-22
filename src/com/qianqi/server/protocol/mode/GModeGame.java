@@ -381,7 +381,7 @@ public class GModeGame {
 			bubble = room.find(session.getId());
 		if(bubble != null)
 		{
-			if(type == 0)
+			if(type == 0 || type == 1)
 			{
 				bubble.setExp(bubble.getExp()+exp);
 				if(bubble.getExp() > GServerConfig.getExpForLevel(bubble.getLevel()+1) && 
@@ -393,11 +393,6 @@ public class GModeGame {
 				obj.put("level", bubble.getLevel());
 				obj.put("exp", bubble.getExp());
 				obj.put("grow", bubble.getGrow());
-			}
-			//类型1时为特殊子弹
-			else if(type == 1)
-			{
-				
 			}
 			//类型为2为血袋
 			else if(type == 2)
@@ -534,6 +529,16 @@ public class GModeGame {
 					return;
 				}
 				bubble.setKill(bubble.getKill()+1);
+				long time = System.currentTimeMillis();
+				if(time - bubble.killTime < 5*1000)
+				{
+					bubble.killNum += 1;
+				}
+				else
+				{
+					bubble.killNum = 1;
+				}
+				bubble.killTime = time;
 				//不是机器人才会更新最大击杀
 				if(bubbleSession != null)
 				{
@@ -562,45 +567,48 @@ public class GModeGame {
 					}
 				}					
 			}
-			else
-			{					
-				dieJson = new JSONObject();
-				//先计算排名
-				List<GBubble> list = new ArrayList<GBubble>();
-				for(GBubble bubble2 : room.getBubbles().values())
-				{
-					list.add(bubble2);
-				}
-				for(GBubble bubble2 : room.getRobots().values())
-				{
-					list.add(bubble2);
-				}
-				Collections.sort(list, new Comparator<GBubble>(){
-		            public int compare(GBubble arg0, GBubble arg1) {
-		                return arg1.getExp() - arg0.getExp();
-		            }
-		        });
-				int rank = 1;
-				for(int i=0;i<list.size();i++)
-				{
-					GBubble bubble2 = list.get(i);
-					if(bubble2.getUid().equals(targetBubble.getUid()))
-					{
-						rank = i+1;
-						break;
-					}				
-				}
-				
-				
-				dieJson.put("killMe", bubbleUid);
-				if(bubble != null)
-					dieJson.put("killMeName", bubble.getName());
-				else
-					dieJson.put("killMeName", bubbleUid);
-				dieJson.put("rank", rank);
-				dieJson.put("exp", targetBubble.getExp());
-				dieJson.put("kill", targetBubble.getKill());
+			dieJson = new JSONObject();
+			//先计算排名
+			List<GBubble> list = new ArrayList<GBubble>();
+			for(GBubble bubble2 : room.getBubbles().values())
+			{
+				list.add(bubble2);
 			}
+			for(GBubble bubble2 : room.getRobots().values())
+			{
+				list.add(bubble2);
+			}
+			Collections.sort(list, new Comparator<GBubble>(){
+	            public int compare(GBubble arg0, GBubble arg1) {
+	                return arg1.getExp() - arg0.getExp();
+	            }
+	        });
+			int rank = 1;
+			for(int i=0;i<list.size();i++)
+			{
+				GBubble bubble2 = list.get(i);
+				if(bubble2.getUid().equals(targetBubble.getUid()))
+				{
+					rank = i+1;
+					break;
+				}				
+			}
+			
+			
+			dieJson.put("killMe", bubbleUid);
+			if(bubble != null)
+			{
+				dieJson.put("killMeName", bubble.getName());
+				dieJson.put("killNum", bubble.killNum);
+			}
+			else
+			{
+				dieJson.put("killMeName", bubbleUid);
+				dieJson.put("killNum", 1);
+			}
+			dieJson.put("rank", rank);
+			dieJson.put("exp", targetBubble.getExp());
+			dieJson.put("kill", targetBubble.getKill());
 		}
 				
 		JSONObject obj2 = new JSONObject();
@@ -866,7 +874,7 @@ public class GModeGame {
 			targetBubble.setX(x);
 			targetBubble.setY(y);
 			JSONArray arr = obj.getJSONArray("pos");
-			int exp = targetBubble.getExp() / arr.size();
+			int exp = targetBubble.getExp() / (arr.size()/2);
 			if(exp < 1)
 				exp = 1;
 			//掉落水滴
@@ -1020,6 +1028,8 @@ public class GModeGame {
 		GRoom room = GServerController.getInstance().findRoom(roomId);
 		if(room == null)
 			return;
+		if(room.getBubbles().size() == 0)
+			return;
 		float time = dt / 1000.f;
 		for(GBubble bubble : room.getBubbles().values())
 		{
@@ -1120,6 +1130,8 @@ public class GModeGame {
 	{
 		GRoom room = GServerController.getInstance().findRoom(roomId);
 		if(room == null)
+			return;
+		if(room.getBubbles().size() == 0)
 			return;
 		float time = dt / 1000.f;
 		JSONArray arr = new JSONArray();
