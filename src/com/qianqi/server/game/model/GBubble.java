@@ -49,6 +49,7 @@ public class GBubble {
     public long currAttackTime = 0;
     public long killTime = 0;
     public int killNum = 0;
+    public boolean clear = false;
     
 	public String getUid() {
 		return uid;

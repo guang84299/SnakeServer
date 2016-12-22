@@ -9,7 +9,7 @@
 	"numClound" : 0,
 	"maxClound" : 2.0,
 	"bulletId" : 1,
-	"maxRobotNum" : 15,
+	"maxRobotNum" : 5,
 	"numBullet" : 2,
 	"refreshBullet" : 1,
 	"killBlock" : 5,

@@ -50,7 +50,7 @@ public class GRoom {
 		robots = new HashMap<String, GBubble>();
 		clounds = new ArrayList<GClound>();
 		drops = new ArrayList<GDrop>();
-		time = 8*1000;//GServerConfig.roomTime;
+		time = GServerConfig.roomTime;
 		lastTime = System.currentTimeMillis();
 		
 		mapId = GTools.getRand(0, GServerConfig.maps.size());

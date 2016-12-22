@@ -331,6 +331,43 @@ public class GModeGame {
 		//清除房间数据
 		room.remove(session.getId());
 	}
+	//清除断线重连后还存在的bubble
+	public synchronized boolean clearBubble(long roomId,String uid,long sessionId)
+	{
+		GRoom room = GServerController.getInstance().findRoom(roomId);
+		if(room == null)
+			return false;
+		GBubble b = room.find(uid);
+		if(b == null)
+			return false;
+		
+		//找到机器人，解除被携带 离开房间的时候执行
+		for(String uid2 : b.getRobotUid())
+		{
+			GBubble conPlane = room.findRobot(uid2);
+			if(conPlane != null)
+			{
+				conPlane.setBubbleId(0);
+			}
+		}
+		b.getRobotUid().clear();
+		//清除房间数据
+		room.remove(room.findSessionId(uid));
+		return true;
+//		JSONObject obj = new JSONObject();	
+//		obj.put("uid", uid);
+//		GData data = new GData(GProtocol.MODE_GAME_LEAVEROOM_RESULT, obj.toString());
+//		String data2 = data.pack();
+//		for (Map.Entry<Long, GBubble> entry : room.getBubbles().entrySet()) 
+//		{
+//			long sessionId2 = entry.getKey();
+//			GSession gs = GSessionHandler.getInstance().getGSessionById(sessionId2);
+//			if(gs != null &&  sessionId != sessionId2)
+//			{
+//				gs.send(data2);
+//			}
+//		}
+	}
 	//添加水滴
 	public synchronized void addBlock(long roomId,List<GBlock> list,int x,int y)
 	{

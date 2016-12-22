@@ -147,6 +147,7 @@ public class GModeUser {
 			obj.put("uid", gsession.getUser().getUid());
 			obj.put("result", b);	
 			obj.put("bubble", bubble_data);
+			obj.put("clear",bubble.clear);
 			String otherData = obj.toString();
 			GData otherData2 = new GData(GProtocol.MODE_GAME_JOINROOM_RESULT, otherData);
 			otherData = otherData2.pack();
