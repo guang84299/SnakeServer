@@ -50,6 +50,7 @@ public class GBubble {
     public long killTime = 0;
     public int killNum = 0;
     public boolean clear = false;
+    public long robotDieTime = 0;
     
 	public String getUid() {
 		return uid;

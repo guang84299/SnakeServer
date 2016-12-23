@@ -42,6 +42,8 @@ public class GRoom {
 	private int mapHeight;
 	private float mapPosX;
 	private float mapPosY;
+	
+	private int maxRobotNum;
 	public GRoom(long roomId) {
 		super();
 		this.roomId = roomId;
@@ -50,10 +52,11 @@ public class GRoom {
 		robots = new HashMap<String, GBubble>();
 		clounds = new ArrayList<GClound>();
 		drops = new ArrayList<GDrop>();
-		time = GServerConfig.roomTime;
+		time = 30*1000;//GServerConfig.roomTime;
 		lastTime = System.currentTimeMillis();
 		
 		mapId = GTools.getRand(0, GServerConfig.maps.size());
+		maxRobotNum = GServerConfig.maxRobotNum;
 		initClound();
 		initBlock();	
 	}
@@ -494,6 +497,18 @@ public class GRoom {
 			//遍历机器人 查看是否被分配
 			for(GBubble robot : robots.values())
 			{
+				if(robot.getState() == GBubble.STATE.DIE)
+				{
+					robot.robotDieTime += 1;
+					if(robot.robotDieTime > 10)
+					{
+						robot.robotDieTime = 0;
+						GModeGame.getInstance().robotRelived(this, robot);	
+						System.out.println("robotRelived");
+						continue;
+					}
+				}
+				robot.robotDieTime = 0;
 				if(robot.getState() != GBubble.STATE.DIE)
 				{
 					boolean b = true;
@@ -539,13 +554,13 @@ public class GRoom {
 						if(p2 != null)
 						{
 							GModeGame.getInstance().allotRobot(p2.getUid(),robot.getUid());
-						}
+						}						
 					}
 				}
 			}
 			
 			//是否需要添加机器人
-			if(bubbles.size() + robots.size() < GServerConfig.maxRoomSessions && robots.size() < GServerConfig.maxRobotNum)
+			if(bubbles.size() + robots.size() < GServerConfig.maxRoomSessions && robots.size() < maxRobotNum)
 			{
 				addRobot();
 			}

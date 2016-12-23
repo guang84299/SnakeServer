@@ -21,11 +21,12 @@ import net.sf.json.JSONObject;
 public class GServerConfig {
 	public static JSONObject config;
 	public static JSONObject bubble;
-	public static JSONArray bullets;
+//	public static JSONArray bullets;
 	public static JSONArray maps;
 	public static JSONArray skins;
 	public static JSONArray statements;
 	public static String[] names;
+	public static String res_name;
 	//服务器列表
 	public static final Map<String,String> serverList = new HashMap<String, String>();
 	
@@ -37,7 +38,7 @@ public class GServerConfig {
 	public static int refreshTime;//刷新间隔	
 	public static int numClound;//初始云朵个数
 	public static int maxClound;//云朵最大百分比
-	public static int bulletId;//初始子弹id
+//	public static int bulletId;//初始子弹id
 	public static int maxRobotNum;
 //	public static int roomWidth;
 //	public static int roomHeight;
@@ -60,7 +61,7 @@ public class GServerConfig {
 		grows.clear();
 		
 		String res = initConfig("gameConfig.json");
-		String res_bullets = initConfig("bullets.json");
+//		String res_bullets = initConfig("bullets.json");
 		String res_maps = initConfig("maps.json");
 		String res_skins = initConfig("skins.json");
 		String res_statements = initConfig("statements.json");
@@ -73,7 +74,7 @@ public class GServerConfig {
 	     roomTime = config.getInt("roomTime") * 60 * 1000;
 	     numBlock = config.getInt("numBlock");
 	     refreshTime = config.getInt("refreshTime") * 1000;
-	     bulletId = config.getInt("bulletId");
+//	     bulletId = config.getInt("bulletId");
 	     numClound = config.getInt("numClound");
 	     maxClound = config.getInt("maxClound");
 	     maxRobotNum = config.getInt("maxRobotNum");
@@ -88,12 +89,13 @@ public class GServerConfig {
 	     serverList.put("1", config.getString("ip"));
 	     	     
 	     bubble = config.getJSONObject("bubble");
-	     bullets = JSONArray.fromObject(res_bullets);
+//	     bullets = JSONArray.fromObject(res_bullets);
 	     maps = JSONArray.fromObject(res_maps);
 	     skins = JSONArray.fromObject(res_skins);
 	     statements = JSONArray.fromObject(res_statements);
 	     
 	     res_names = res_names.replaceAll("\\s", "");
+	     res_name = res_names;
 		 names = res_names.split(",");
 		 
 	     //解析地图

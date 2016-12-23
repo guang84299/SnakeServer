@@ -531,13 +531,14 @@ public class GModeGame {
 		String bubbleUid = obj.getString("bubble");
 		
 		GBubble targetBubble = null;
+		GSession targetSession = null;
 		if(target_robot)
 		{
 			targetBubble = room.findRobot(targetUid);
 		}
 		else
 		{
-	        GSession targetSession = GSessionHandler.getInstance().getSessionByUid(targetUid);
+	        targetSession = GSessionHandler.getInstance().getSessionByUid(targetUid);
 	        targetBubble = room.find(targetSession.getSession().getId());
 		}
 		GBubble bubble = null;
@@ -603,6 +604,16 @@ public class GModeGame {
 						conPlane.getRobotUid().remove(targetUid);
 					}
 				}					
+			}
+			else
+			{
+				if(targetSession != null)
+				{
+					//复活前保存下最大长度
+					if(targetBubble.getExp() > targetSession.getUser().getMaxLen())
+						targetSession.getUser().setMaxLen(targetBubble.getExp());
+				}
+				
 			}
 			dieJson = new JSONObject();
 			//先计算排名
@@ -839,7 +850,7 @@ public class GModeGame {
 			
 			bubble.setX(newBubble.getX());
 			bubble.setY(newBubble.getY());
-			bubble.setState(GBubble.STATE.IDLE);			
+			bubble.setState(GBubble.STATE.BORN);			
 			bubble.setDirX(0);
 			bubble.setDirY(1);
 			bubble.setAngle(90);
@@ -919,14 +930,13 @@ public class GModeGame {
 			//机器人复活
 			if(target_robot)
 			{
-				robotRelived(gsession,targetBubble);
+				robotRelived(room,targetBubble);
 			}				
 		}		
 	}
 	//机器人复活
-	public synchronized void robotRelived(GSession gsession, GBubble targetBubble)
+	public synchronized void robotRelived(GRoom room, GBubble targetBubble)
 	{
-		GRoom room = GServerController.getInstance().findRoom(gsession.getRoomId());
 		if(room == null)
 			return;
 		GBubble bubble = targetBubble;
@@ -937,14 +947,14 @@ public class GModeGame {
 			
 			bubble.setX(newBubble.getX());
 			bubble.setY(newBubble.getY());
-			bubble.setState(GBubble.STATE.IDLE);			
+			bubble.setState(GBubble.STATE.BORN);			
 			bubble.setDirX(0);
 			bubble.setDirY(1);
 			bubble.setAngle(90);
 			bubble.setLevel(0);
 			bubble.setExp(0);
 			bubble.setGrow(newBubble.getGrow());
-			bubble.setSkinId(gsession.getUser().getSkinId());
+			bubble.setSkinId(newBubble.getSkinId());
 			bubble.setBubbleId(newBubble.getBubbleId());
 			
 			while(room.isCoincide(bubble))
@@ -968,7 +978,8 @@ public class GModeGame {
 				{
 					gs.send(otherData);
 				}
-			}	
+			}
+			
 		}
 	}
 	//泡泡碰撞
@@ -1118,7 +1129,7 @@ public class GModeGame {
 		
 		for(GBubble bubble : room.getRobots().values())
 		{
-			if(bubble.getState() != GBubble.STATE.DIE)
+			if(bubble.getState() != GBubble.STATE.DIE && bubble.getBubbleId() != 0)
 			{
 				float angle = bubble.getRotate();
 				if(bubble.getAngle() > bubble.getRotate())
@@ -1229,7 +1240,7 @@ public class GModeGame {
 		
 		for(GBubble bubble : room.getRobots().values())
 		{
-			if(bubble.getState() != GBubble.STATE.DIE)
+			if(bubble.getState() != GBubble.STATE.DIE  && bubble.getBubbleId() != 0)
 			{
 				boolean up = false;
 				if(bubble.getState() == GBubble.STATE.MOVE)

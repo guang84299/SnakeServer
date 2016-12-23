@@ -68,14 +68,27 @@ public class GModeUser {
 		//登录成功返回公用数据
 		JSONObject obj = new JSONObject();
 		obj.put("result", true);
-		obj.put("bulletId", GServerConfig.bulletId);
-		obj.put("bullets", GServerConfig.bullets);
+//		obj.put("bulletId", GServerConfig.bulletId);
+//		obj.put("bullets", GServerConfig.bullets);
 //		obj.put("roomWidth", GServerConfig.roomWidth);
 //		obj.put("roomHeight", GServerConfig.roomHeight);
 		obj.put("exps", GServerConfig.bubble.getString("exp"));
 		obj.put("grows", GServerConfig.bubble.getString("grow"));
 		obj.put("skins", GServerConfig.skins);
+		obj.put("res_name", GServerConfig.res_name);
 		obj.put("shareAward", GServerConfig.shareAward);
+		GBubble bubble = GModelTool.getBubble(gsession.getUser().getUid(),true,1000,1000);
+		obj.put("bubble", JSONObject.fromObject(bubble));
+		
+		int mapId = GTools.getRand(0, GServerConfig.maps.size());
+		JSONObject map = GServerConfig.maps.getJSONObject(mapId);
+		
+		obj.put("mapId", mapId );
+		obj.put("roomWidth", (int) map.getDouble("w"));
+		obj.put("roomHeight", (int) map.getDouble("h"));
+		obj.put("mapPosX", (float) map.getDouble("x"));
+		obj.put("mapPosY", (float) map.getDouble("y"));
+		
 		GData data2 = new GData(GProtocol.MODE_USER_LOGIN_RESULT, obj.toString());
 		session.write(data2.pack());  
 	}

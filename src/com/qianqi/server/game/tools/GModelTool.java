@@ -22,7 +22,7 @@ public class GModelTool {
 	{
 		bullets.clear();
 		
-		JSONArray arr = GServerConfig.bullets;
+		JSONArray arr = new JSONArray();// = GServerConfig.bullets;
 		for(int i=0;i<arr.size();i++)
 		{
 			JSONObject obj = arr.getJSONObject(i);
@@ -94,7 +94,7 @@ public class GModelTool {
 		bubble.setAngle(0);
 		bubble.setKill(0);
 		bubble.setDie(0);
-		bubble.setSkinId(1);
+		bubble.setSkinId(GTools.getRand(1, GServerConfig.skins.size()));
 		bubble.setReduceHP(obj.getInt("reduceHP"));
 		bubble.setReduceCD((float)obj.getDouble("reduceCD"));
 		

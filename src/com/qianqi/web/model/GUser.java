@@ -36,6 +36,8 @@ public class GUser {
 	private String skins;
 	//update user set skinId=1 where id > 0;
 	private int skinId;
+	//update user set maxLen=0 where id > 0;
+	private int maxLen;
 	
 	private Long rewardTime;
 	
@@ -53,6 +55,7 @@ public class GUser {
 		this.skins = "1";
 		this.skinId = 1;
 		this.rewardTime = 0l;
+		this.maxLen = 0;
 	}
 	@Id
 	@GeneratedValue
@@ -164,6 +167,12 @@ public class GUser {
 	}
 	public void setRewardTime(Long rewardTime) {
 		this.rewardTime = rewardTime;
+	}
+	public int getMaxLen() {
+		return maxLen;
+	}
+	public void setMaxLen(int maxLen) {
+		this.maxLen = maxLen;
 	}
 	
 }
