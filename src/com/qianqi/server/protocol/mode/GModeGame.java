@@ -1374,6 +1374,8 @@ public class GModeGame {
 	public synchronized void allotRobot(String uid,String robotUid)
 	{
 		GSession gsession = GSessionHandler.getInstance().getSessionByUid(uid);		
+		if(gsession == null)
+			return;
 		GRoom room = GServerController.getInstance().findRoom(gsession.getRoomId());
 		if(room == null)
 		{
@@ -1381,9 +1383,16 @@ public class GModeGame {
 		}
 		long sessionid = gsession.getSession().getId();
 		GBubble plane = room.find(sessionid);
+		if(plane == null)
+			return;
 		plane.getRobotUid().add(robotUid);
 		
 		GBubble robot = room.findRobot(robotUid);
+		if(robot == null)
+		{
+			plane.getRobotUid().remove(robotUid);
+			return;
+		}
 		robot.setBubbleId(sessionid);
 				
 		JSONObject obj = new JSONObject();

@@ -2,22 +2,22 @@
 	{		    
 		"id" : 1,
 		"name" : "火焰英雄",
-		"price" : 50
+		"price" : 20
 	},
 	{		    
 		"id" : 2,
 		"name" : "冰雪皇后",
-		"price" : 50
+		"price" : 20
 	},
 	{		    
 		"id" : 3,
 		"name" : "风暴骑士",
-		"price" : 50
+		"price" : 20
 	},
 	{		    
 		"id" : 4,
 		"name" : "4",
-		"price" : 50
+		"price" : 20
 	},
 	{		    
 		"id" : 5,
